@@ -1,0 +1,46 @@
+import React from "react";
+import Header from "../components/AppBar/Header";
+import Image from "next/image";
+import { useState } from "react";
+import cellPhone from "./cell.webp";
+import Sidebar from "../components/AppBar/Sidebar";
+import PreviewComponent from "..//components/Preview/PreviewComponent";
+import { useAppSelector } from "../store/store";
+
+function Childlayout({ children }) {
+  const [sidebarShow, setsidebarShow] = useState(true);
+  const { preview } = useAppSelector((state) => state.theme);
+
+  const sidebarHandle = () => {
+    setsidebarShow(!sidebarShow);
+  };
+  return (
+    <div className="flex h-screen">
+      <div
+        className={`transition-all ${
+          sidebarShow ? "w-80 p-2 visible" : "w-0 p-0 invisible"
+        }`}
+      >
+        <Sidebar />
+      </div>
+      <div className="w-full p-2 h-full">
+        <Header sidebarClick={sidebarHandle} open={sidebarShow} />
+        <div className="flex p-2 h-[80%]">
+          <div className="w-full mr-5">{children}</div>
+            <div className={`flex justify-center items-center ${preview ? "w-[20%]" : "w-[0%]"} h-full transition-all overflow-hidden`}>
+              <div className="relative flex justify-center items-center ">
+                <Image src={cellPhone} className="w-52 h-96" />
+                <div className="p-2 absolute top-0 rounded-4xl h-full w-full overflow-hidden">
+                  <div className="h-full w-full rounded-3xl bg-white p-2 relative">
+                    <PreviewComponent />
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Childlayout;

@@ -25,3 +25,7 @@ body {
     text-wrap: balance;
   }
 }
+
+.collapse-arrow > .collapse-title:after{
+  top: 1.5rem;
+}
