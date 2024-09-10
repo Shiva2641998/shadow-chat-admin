@@ -1,11 +1,11 @@
-import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import appRoutes from "./appRoutes";
 import Link from "next/link";
 
 export function Routes() {
-  const router = useRouter();
-  const { pathname } = router;
-    console.log(pathname, "pathname");
+  const pathname = usePathname();
+  const lastRoute = pathname.split("/")[pathname.split("/")?.length - 1]
+    console.log(pathname?.includes('/chat'), "pathname", lastRoute);
   return (
     <div
       className="join join-vertical w-full text-white"
@@ -34,7 +34,7 @@ export function Routes() {
             <div className="collapse-content text-black px-0 mx-2">
               {route.child.map((subRoute) => (
                 <Link href={subRoute.path} key={subRoute.path}>
-                  <p className={` my-2 px-5 py-2 rounded-md font-600 hover:font-bold hover:scale-105 transition-all  bg-localColor text-activeSecondaryBgColor`}>
+                  <p className={` my-2 px-5 py-2 rounded-md font-600 hover:font-bold hover:scale-105 text-activeSecondaryBgColor transition-all   ${subRoute.path?.includes(lastRoute) ? "border-b-4 bg-localColor border-activePrimaryBgColor " : "bg-localColor "}`}>
                     {" "}
                     {subRoute.displayText}
                   </p>
