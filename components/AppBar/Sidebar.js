@@ -3,7 +3,7 @@ import Routes from "../routes";
 
 function Sidebar() {
   return (
-    <div className="bg-primaryBgColor h-full rounded-lg shadow-lg px-2 py-2">
+    <div className="bg-primaryBgColor h-full shadow-lg border-r-2 px-2 py-2">
       <Routes />
     </div>
   );

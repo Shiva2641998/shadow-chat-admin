@@ -4,6 +4,8 @@ import { RiMenu2Fill } from "react-icons/ri";
 import { useRequestApiAction } from "../../axios/requests/useRequestApiAction";
 import { setAccessTokenInfo } from "../../store/themeSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { FaBell } from "react-icons/fa6";
+
 
 function Header({ sidebarClick, open }) {
   const dispatch = useDispatch()
@@ -22,7 +24,7 @@ function Header({ sidebarClick, open }) {
   };
 
   return (
-    <div className="navbar bg-primaryBgColor rounded-lg shadow-lg text-secondaryBgColor">
+    <div className="navbar bg-primaryBgColor shadow-lg text-secondaryBgColor">
       <div className="flex-1">
         <div onClick={sidebarClick} className="cursor-pointer">
           {open ? (
@@ -40,8 +42,12 @@ function Header({ sidebarClick, open }) {
           <input
             type="text"
             placeholder="Search"
-            className="input input-bordered w-24 md:w-auto bg-secondaryBgColor text-primaryBgColor"
+            className="input input-bordered w-24 md:w-auto bg-activePrimaryBgColor text-primaryBgColor"
           />
+        </div>
+        <div className="bg-localColor p-2 rounded-lg text-activePrimaryBgColor mx-3 relative cursor-pointer">
+        <div className="badge bg-activePrimaryBgColor text-localColor badge-xs absolute -top-2 -right-2 w-5 h-5">5</div>
+          <FaBell className="w-5 h-5" />
         </div>
         <div className="dropdown dropdown-end">
           <div

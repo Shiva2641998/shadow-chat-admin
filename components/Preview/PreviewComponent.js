@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import ChatPage from "./ChatPage";
 import ChatList from "./ChatList";
+import { useRouter } from "next/navigation";
 
 function PreviewComponent() {
   const [path, setpath] = useState("/");
+  const router = useRouter();
   useEffect(() => {
-    const { pathname } = window.location;
+  const { pathname } = router;
     console.log(pathname, "pathname");
     setpath(pathname);
   }, []);

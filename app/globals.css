@@ -29,3 +29,11 @@ body {
 .collapse-arrow > .collapse-title:after{
   top: 1.5rem;
 }
+
+.ag-cell-value, .ag-group-value{
+  overflow: inherit !important;
+}
+
+/* .sketch-picker {
+  width: 20% !important;
+} */

@@ -4,6 +4,8 @@ import Link from "next/link";
 
 export function Routes() {
   const router = useRouter();
+  const { pathname } = router;
+    console.log(pathname, "pathname");
   return (
     <div
       className="join join-vertical w-full text-white"
@@ -18,7 +20,8 @@ export function Routes() {
           tabIndex={0}
           className="collapse collapse-arrow mb-4 rounded-md"
         >
-          <div className="collapse-title text-xl font-medium flex items-center p-0 bg-secondaryBgColor text-black min-h-11 h-11 ">
+          <div className={`collapse-title text-xl font-medium flex items-center p-0   min-h-11 h-11 
+          ${pathname?.includes(route.path) ? "bg-activePrimaryBgColor text-primaryBgColor" : "bg-primaryBgColor text-activeSecondaryBgColor"}`}>
             <Link href={route.path}>
               <div className="collapse-title text-xl font-medium flex items-center p-0 pl-5">
                 <div className="mr-3">{route.sidebarProps.icon}</div>
@@ -31,7 +34,7 @@ export function Routes() {
             <div className="collapse-content text-black px-0 mx-2">
               {route.child.map((subRoute) => (
                 <Link href={subRoute.path} key={subRoute.path}>
-                  <p className=" my-2 px-2 py-2 text-black rounded-md bg-secondaryBgColor hover:font-bold hover:scale-105 transition-all">
+                  <p className={` my-2 px-5 py-2 rounded-md font-600 hover:font-bold hover:scale-105 transition-all  bg-localColor text-activeSecondaryBgColor`}>
                     {" "}
                     {subRoute.displayText}
                   </p>
