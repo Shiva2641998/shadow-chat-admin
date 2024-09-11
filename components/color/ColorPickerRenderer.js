@@ -1,10 +1,10 @@
 // ColorPickerRenderer.jsx
-import React, { useEffect, useRef, useState } from 'react';
-import { SketchPicker } from 'react-color';
+import React, { useEffect, useRef, useState } from "react";
+import { SketchPicker } from "react-color";
 
 const ColorPickerRenderer = (props) => {
   const pickerRef = useRef(null);
-  const [color, setColor] = useState(props.value || '#ffffff');
+  const [color, setColor] = useState(props.value || "#ffffff");
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
 
   const handleClickOutside = (event) => {
@@ -14,36 +14,47 @@ const ColorPickerRenderer = (props) => {
   };
 
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
   const handleChange = (color) => {
     setColor(color.hex);
-    setDisplayColorPicker(false)
-    props.node.setDataValue(props.column.colId, color.hex);
+    props.node?.setDataValue(props.column.colId, color.hex);
+    props.api?.stopEditing();
   };
 
   return (
-    <div className='flex ' style={{
-      padding: '5px',
-      display: 'flex',
-      alignItems: 'center',
-      position: 'relative', // Ensure it's positioned relatively
-      zIndex: 1000, // Set a high z-index value
-    }}>
-      {
-        displayColorPicker ?  <div ref={pickerRef} style={{
-          position: 'absolute', // Position the color picker absolutely
-          zIndex: 1000, // Ensure it appears on top
-          top: '100%', // Position it below the container
-          left: 0, // Align it with the left edge
-        }}>
-        <SketchPicker color={color} onChange={handleChange} style={{ position: 'absolute', zIndex: 1000 }}/>
-      </div> : <span onClick={() => setDisplayColorPicker(!displayColorPicker)}>{color}</span> 
-      }
+    <div
+      className="flex justify-center items-center "
+      style={{
+        padding: "5px",
+        display: "flex",
+        alignItems: "center"
+      }}
+    >
+      {displayColorPicker ? (
+        <div
+          ref={pickerRef}
+         
+        >
+          <SketchPicker
+            color={color}
+            onChange={handleChange}
+            style={{ position: "absolute", zIndex: 1000 }}
+          />
+        </div>
+      ) : (
+        <div className={`border-2 border-gray-200 rounded-md w-14 h-8 p-1 flex justify-center items-center`}>
+          <span
+            className={`w-full h-full`}
+            style={{ backgroundColor: color }}
+            onClick={() => setDisplayColorPicker(!displayColorPicker)}
+          ></span>
+        </div>
+      )}
 
       {/* <div
         style={{
@@ -54,7 +65,6 @@ const ColorPickerRenderer = (props) => {
         }}
         
       /> */}
-     
     </div>
   );
 };

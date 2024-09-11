@@ -3,7 +3,7 @@ import { IoColorFill } from "react-icons/io5";
 
 const appRoutes = [
   {
-    path: "/chat",
+    path: "/chat/rooms",
     sidebarProps: {
       displayText: "Chat",
       icon: <IoIosChatbubbles />,
@@ -25,7 +25,7 @@ const appRoutes = [
     ],
   },
   {
-    path: "/theme",
+    path: "/theme/header",
     sidebarProps: {
       displayText: "Theme",
       icon: <IoColorFill />,

@@ -30,8 +30,18 @@ body {
   top: 1.5rem;
 }
 
-.ag-cell-value, .ag-group-value{
-  overflow: inherit !important;
+.ag-cell {
+  overflow: visible !important;
+}
+
+.ag-row-focus {
+  z-index: 1;
+}
+
+.ag-center-cols-viewport,
+.ag-center-cols-clipper,
+.ag-layout-normal {
+  overflow: visible !important;
 }
 
 /* .sketch-picker {

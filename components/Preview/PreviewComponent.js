@@ -11,12 +11,12 @@ function PreviewComponent() {
   }, []);
 
   switch (path) {
-    case "/Chat":
-      return <ChatPage />;
+    case "/chat/rooms":
+      return <ChatPage path={path} />;
     case "/ChatList":
-      return <ChatList />;
+      return <ChatList path={path} />;
     default:
-      return <ChatPage />;
+      return <ChatPage path={path} />;
     //   return <saytv-chat bubble="false" authentication="true"></saytv-chat>;
   }
 }

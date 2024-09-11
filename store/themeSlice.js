@@ -3,7 +3,11 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   authState: false,
   preview: false,
-  access_token: false
+  access_token: false,
+  previewData: {
+    type: "",
+    data: {}
+  }
 };
 
 export const authSlice = createSlice({
@@ -19,8 +23,11 @@ export const authSlice = createSlice({
     setAccessTokenInfo: (state, action) => {
       state.access_token = action.payload;
     },
+    setPreviewDataInfo: (state, action) => {
+      state.previewData = action.payload;
+    },
   },
 });
 
-export const { setAuthState, previewToggle, setAccessTokenInfo } = authSlice.actions;
+export const { setAuthState, previewToggle, setAccessTokenInfo, setPreviewDataInfo } = authSlice.actions;
 export const authReducer = authSlice.reducer;

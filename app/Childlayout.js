@@ -31,7 +31,7 @@ function Childlayout({ children }) {
               <div className="relative flex justify-center items-center ">
                 <Image src={cellPhone} className="w-52 h-96" />
                 <div className="p-2 absolute top-0 rounded-4xl h-full w-full overflow-hidden">
-                  <div className="h-full w-full rounded-3xl bg-white p-2 relative">
+                  <div className="h-full w-full rounded-3xl bg-white relative overflow-hidden">
                     <PreviewComponent />
                   </div>
                 </div>
