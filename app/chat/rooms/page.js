@@ -51,7 +51,7 @@ function page() {
             {editImage ? (
               <>
                 <input
-                className="h-8 rounded-md outline-none"
+                className="h-8 rounded-md outline-none bg-white"
                   onChange={(e) => {
                     setRowData((prevRows) =>
                       prevRows.map((row) =>{
