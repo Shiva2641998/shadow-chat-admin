@@ -30,9 +30,15 @@ body {
   top: 1.5rem;
 }
 
+.dataGridTable{
+  overflow: visible !important;
+}
 
+.MuiDataGrid-topContainer{
+  z-index: 0 !important;
+}
 
-.css-1y99dq9-MuiDataGrid-root .MuiDataGrid-cell {
+/* .css-1y99dq9-MuiDataGrid-root .MuiDataGrid-cell {
   overflow: visible !important;
 }
 .css-1793420-MuiDataGrid-virtualScroller{
@@ -46,7 +52,7 @@ body {
 }
 .css-1y99dq9-MuiDataGrid-root{
   overflow: visible !important;
-}
+} */
 
 /* .sketch-picker {
   width: 20% !important;

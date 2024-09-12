@@ -45,25 +45,18 @@ const ColorPickerRenderer = ({ params, setRowData, showInPreview }) => {
 
   return (
     <div className="flex justify-center items-center h-full" style={{ position: "relative" }}>
-      {displayColorPicker ? (
-        <div
-          ref={pickerRef}
-          style={{
-            position: "absolute",
-            zIndex: 2000, // Ensure this is high enough
-            top: "100%", // Adjust as needed
-            left: 0, // Adjust as needed
-          }}
-        >
-          <SketchPicker
-            color={color}
-            onChangeComplete={handleChangeComplete}
-            disableAlpha // Optional: Hide alpha channel
+    {displayColorPicker ? (
+    <div ref={pickerRef} className="z-50">
+        <SketchPicker
+        className="z-50"
+          color={color}
+          onChangeComplete={handleChangeComplete}
+          disableAlpha
           />
-        </div>
+      </div>
       ) : (
         <div
-          className={`border-2 border-gray-200 rounded-md w-14 h-8 p-1 flex justify-center items-center`}
+          className={`border-2 border-gray-200 rounded-md w-14 h-8 p-1 z-10 flex justify-center items-center`}
         >
           <span
             className={`w-full h-full`}

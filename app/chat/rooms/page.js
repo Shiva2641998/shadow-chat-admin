@@ -85,7 +85,7 @@ function page() {
     {
       field: "primaryBgColor",
       headerName: "Primary Bg Color",
-      editable: true,
+      editable: false,
       align: 'center',
       headerAlign: 'center',
       flex: 1,
@@ -102,7 +102,7 @@ function page() {
     {
       field: "primaryTextColor",
       headerName: "Primary Text Color",
-      editable: true,
+      editable: false,
       align: 'center',
       headerAlign: 'center',
       flex: 1,
@@ -171,6 +171,7 @@ function page() {
           </div>
         )}
         <DataGrid
+        className="dataGridTable"
           rows={rowData}
           columns={columns}
           disableColumnMenu
@@ -183,6 +184,20 @@ function page() {
           }}
           pageSizeOptions={[5]}
           processRowUpdate={handleProcessRowUpdate}
+          sx={{
+            '& .MuiDataGrid-cell': {
+              overflow: 'visible',
+            },
+            '& .MuiDataGrid-virtualScroller': {
+              overflow: 'visible',
+            },
+            '& .MuiDataGrid-virtualScrollerRenderZone': {
+              overflow: 'visible',
+            },
+            '& .MuiDataGrid-main': {
+              overflow: 'visible',
+            },
+          }}
         />
       </div>
     </div>
