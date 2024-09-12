@@ -30,17 +30,21 @@ body {
   top: 1.5rem;
 }
 
-.ag-cell {
+
+
+.css-1y99dq9-MuiDataGrid-root .MuiDataGrid-cell {
   overflow: visible !important;
 }
-
-.ag-row-focus {
-  z-index: 1;
+.css-1793420-MuiDataGrid-virtualScroller{
+  overflow: visible !important;
 }
-
-.ag-center-cols-viewport,
-.ag-center-cols-clipper,
-.ag-layout-normal {
+.css-s1v7zr-MuiDataGrid-virtualScrollerRenderZone{
+  overflow: visible !important;
+}
+.css-3eek4p-MuiDataGrid-main{
+  overflow: visible !important;
+}
+.css-1y99dq9-MuiDataGrid-root{
   overflow: visible !important;
 }
 

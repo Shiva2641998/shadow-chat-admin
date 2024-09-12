@@ -2,10 +2,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { SketchPicker } from "react-color";
 
-const ColorPickerRenderer = (props) => {
+const ColorPickerRenderer = ({ params, setRowData, showInPreview }) => {
   const pickerRef = useRef(null);
-  const [color, setColor] = useState(props.value || "#ffffff");
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
+  const [color, setColor] = useState(params.value);
 
   const handleClickOutside = (event) => {
     if (pickerRef.current && !pickerRef.current.contains(event.target)) {
@@ -20,34 +20,51 @@ const ColorPickerRenderer = (props) => {
     };
   }, []);
 
-  const handleChange = (color) => {
+  // Handle color change
+  const handleChangeComplete = (color) => {
     setColor(color.hex);
-    props.node?.setDataValue(props.column.colId, color.hex);
-    props.api?.stopEditing();
+    setRowData((prevRows) =>
+      prevRows.map((row) => {
+        if (row.id === params.id) {
+          let d = { ...row, [params.field]: color.hex };
+          showInPreview(d);
+          return d;
+        } else {
+          return row;
+        }
+      })
+    );
+    // params.api.setEditCellValue({
+    //   id: params.id,
+    //   field: params.field,
+    //   value: color.hex,
+    // });
+    // // Notify the grid about the cell edit
+    // params.api.commitCellChange({ id: params.id, field: params.field });
   };
 
   return (
-    <div
-      className="flex justify-center items-center "
-      style={{
-        padding: "5px",
-        display: "flex",
-        alignItems: "center"
-      }}
-    >
+    <div className="flex justify-center items-center h-full" style={{ position: "relative" }}>
       {displayColorPicker ? (
         <div
           ref={pickerRef}
-         
+          style={{
+            position: "absolute",
+            zIndex: 2000, // Ensure this is high enough
+            top: "100%", // Adjust as needed
+            left: 0, // Adjust as needed
+          }}
         >
           <SketchPicker
             color={color}
-            onChange={handleChange}
-            style={{ position: "absolute", zIndex: 1000 }}
+            onChangeComplete={handleChangeComplete}
+            disableAlpha // Optional: Hide alpha channel
           />
         </div>
       ) : (
-        <div className={`border-2 border-gray-200 rounded-md w-14 h-8 p-1 flex justify-center items-center`}>
+        <div
+          className={`border-2 border-gray-200 rounded-md w-14 h-8 p-1 flex justify-center items-center`}
+        >
           <span
             className={`w-full h-full`}
             style={{ backgroundColor: color }}
@@ -55,16 +72,6 @@ const ColorPickerRenderer = (props) => {
           ></span>
         </div>
       )}
-
-      {/* <div
-        style={{
-          width: '100%',
-          height: '100%',
-          background: color,
-          cursor: 'pointer',
-        }}
-        
-      /> */}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import ChatPage from "./ChatPage";
 import ChatList from "./ChatList";
 import { usePathname } from "next/navigation";
@@ -21,4 +21,4 @@ function PreviewComponent() {
   }
 }
 
-export default PreviewComponent;
+export default memo(PreviewComponent);

@@ -1,11 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
-import { authReducer } from "./themeSlice";
+import { themeReducer } from "./themeSlice";
 
 export const store = configureStore({
-  reducer: { theme: authReducer },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ serializableCheck: false }),
+  reducer: { theme: themeReducer }
 });
 
 export const useAppDispatch = () => useDispatch();

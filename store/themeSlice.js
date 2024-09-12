@@ -4,13 +4,10 @@ const initialState = {
   authState: false,
   preview: false,
   access_token: false,
-  previewData: {
-    type: "",
-    data: {}
-  }
+  previewData: {}
 };
 
-export const authSlice = createSlice({
+export const themeSlice = createSlice({
   name: "theme",
   initialState,
   reducers: {
@@ -24,10 +21,13 @@ export const authSlice = createSlice({
       state.access_token = action.payload;
     },
     setPreviewDataInfo: (state, action) => {
-      state.previewData = action.payload;
+      if(action.payload?.data){
+        console.log(action.payload,"action.payload")
+        state.previewData = {...action.payload};
+      }
     },
   },
 });
 
-export const { setAuthState, previewToggle, setAccessTokenInfo, setPreviewDataInfo } = authSlice.actions;
-export const authReducer = authSlice.reducer;
+export const { setAuthState, previewToggle, setAccessTokenInfo, setPreviewDataInfo } = themeSlice.actions;
+export const themeReducer = themeSlice.reducer;

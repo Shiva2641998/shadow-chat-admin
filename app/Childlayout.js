@@ -26,17 +26,24 @@ function Childlayout({ children }) {
       <div className="w-full h-full">
         <Header sidebarClick={sidebarHandle} open={sidebarShow} />
         <div className="flex px-5 h-[80%]">
-          <div className="w-full mr-5">{children}</div>
-            <div className={`flex justify-center items-center ${preview ? "w-[20%]" : "w-[0%]"} h-full transition-all overflow-hidden`}>
-              <div className="relative flex justify-center items-center ">
-                <Image src={cellPhone} className="w-52 h-96" />
-                <div className="p-2 absolute top-0 rounded-4xl h-full w-full overflow-hidden">
-                  <div className="h-full w-full rounded-3xl bg-white relative overflow-hidden">
-                    <PreviewComponent />
-                  </div>
+          <div className={`${
+              preview ? "w-[80%]" : "w-[100%]"
+            } mr-5`}>{children}</div>
+          <div
+            className={`flex justify-center items-center ${
+              preview ? "w-[20%]" : "w-0"
+            }
+             h-full transition-all overflow-hidden`}
+          >
+            <div className="relative flex justify-center items-center ">
+              <Image src={cellPhone} className="w-52 h-96" />
+              <div className="p-2 absolute top-0 rounded-4xl h-full w-full overflow-hidden">
+                <div className="h-full w-full rounded-3xl bg-white relative overflow-hidden">
+                  <PreviewComponent />
                 </div>
               </div>
             </div>
+          </div>
         </div>
       </div>
     </div>

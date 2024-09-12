@@ -5,7 +5,6 @@ import Link from "next/link";
 export function Routes() {
   const pathname = usePathname();
   const lastRoute = pathname.split("/")[pathname.split("/")?.length - 1];
-  console.log(pathname?.includes("/chat"), "pathname", lastRoute);
   return (
     <div
       className="join join-vertical w-full text-white"
