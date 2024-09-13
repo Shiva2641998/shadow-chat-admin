@@ -11,24 +11,32 @@ import { useDispatch } from "react-redux";
 import { setPreviewDataInfo } from "../../../store/themeSlice";
 import { useAppDispatch } from "../../../store/store";
 import { DataGrid } from "@mui/x-data-grid";
-import { SketchPicker } from "react-color";
+import { IoSave } from "react-icons/io5";
+
+
 
 function page() {
   const { GET } = useRequestApiAction();
 
   const [rowData, setRowData] = useState([]);
-  const [updateButtonShow, setupdateButtonShow] = useState(true);
+  const [updateRowValue, setupdateRowValue] = useState([])
 
-  const handleProcessRowUpdate = (newRow) => {
+  const handleProcessRowUpdate = (params, color) => {
     // Update the row data with new color
-    console.log(newRow, "newRow");
     setRowData((prevRows) =>
-      prevRows.map((row) =>
-        row.id === newRow.id ? { ...row, color: newRow.color } : row
-      )
+      prevRows.map((row) => {
+        if (row.id === params.id) {
+          let d = { ...row, [params.field]: color };
+          showInPreview(d);
+          return d;
+        } else {
+          return row;
+        }
+      })
     );
-    return newRow; // Return the updated row
   };
+
+
 
   const columns = [
     { field: "name", headerName: "Name", flex: 1 },
@@ -94,7 +102,7 @@ function page() {
           <ColorPickerRenderer
             params={params}
             setRowData={setRowData}
-            showInPreview={showInPreview}
+            handleProcessRowUpdate={handleProcessRowUpdate}
           />
         );
       },
@@ -111,20 +119,38 @@ function page() {
           <ColorPickerRenderer
             params={params}
             setRowData={setRowData}
-            showInPreview={showInPreview}
+            handleProcessRowUpdate={handleProcessRowUpdate}
           />
         );
       },
     },
-    // {
-    //   field: 'fullName',
-    //   headerName: 'Full name',
-    //   description: 'This column has a value getter and is not sortable.',
-    //   sortable: false,
-    //   width: 160,
-    //   valueGetter: (value, row) => `${row.firstName || ''} ${row.lastName || ''}`,
-    // },
+
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      width: 150,
+      align: 'center',
+      headerAlign: 'center',
+      renderCell: (params) => {
+        const hasChanged = updateRowValue.filter((row) => row.id === params.id);
+        return <div style={{ display: 'flex', justifyContent: 'center', alignItems: "center", height: "100%" }}>
+         {hasChanged?.length > 0 && <div onClick={() => updateRow(hasChanged)} className="tooltip" data-tip="Save">
+              <IoSave className="w-5 h-5 text-activePrimaryBgColor" />
+          </div>}
+        </div>
+}
+    },
   ];
+
+  const updateRow = async (data) => {
+    // const { data } = await GET("/rooms");
+    // setRowData(
+    //   data.data.map((item) => ({
+    //     id: item._id, // Map _id to id
+    //     ...item,
+    //   }))
+    // );
+  };
 
   const getRoomList = async () => {
     const { data } = await GET("/rooms");
@@ -141,7 +167,7 @@ function page() {
   const showInPreview = (data) => {
     if (data) {
       console.log(data, "data");
-      setupdateButtonShow(true);
+      setupdateRowValue((prev) => [...prev,data])
       dispatch(
         setPreviewDataInfo({
           type: "/chat/rooms",
@@ -163,13 +189,6 @@ function page() {
       // className={"ag-theme-quartz"}
       // style={{ width: "100%", height: "100%" }}
       >
-        {updateButtonShow && (
-          <div className="flex justify-end">
-            <button className="bg-activePrimaryBgColor text-primaryBgColor px-5 py-2 text-sm active:bg-white select-none cursor-pointer rounded-md mb-3">
-              Update
-            </button>
-          </div>
-        )}
         <DataGrid
         className="dataGridTable"
           rows={rowData}
@@ -183,7 +202,7 @@ function page() {
             },
           }}
           pageSizeOptions={[5]}
-          processRowUpdate={handleProcessRowUpdate}
+          // processRowUpdate={handleProcessRowUpdate}
           sx={{
             '& .MuiDataGrid-cell': {
               overflow: 'visible',

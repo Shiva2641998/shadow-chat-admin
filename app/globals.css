@@ -38,6 +38,12 @@ body {
   z-index: 0 !important;
 }
 
+.data-grid-container {
+  height: 600px; /* Set height to control grid's visible area */
+  width: 100%;
+  overflow: auto; /* Manage scrolling behavior */
+}
+
 /* .css-1y99dq9-MuiDataGrid-root .MuiDataGrid-cell {
   overflow: visible !important;
 }

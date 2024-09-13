@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { SketchPicker } from "react-color";
 
-const ColorPickerRenderer = ({ params, setRowData, showInPreview }) => {
+const ColorPickerRenderer = ({ params, setRowData, handleProcessRowUpdate }) => {
   const pickerRef = useRef(null);
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [color, setColor] = useState(params.value);
@@ -23,17 +23,7 @@ const ColorPickerRenderer = ({ params, setRowData, showInPreview }) => {
   // Handle color change
   const handleChangeComplete = (color) => {
     setColor(color.hex);
-    setRowData((prevRows) =>
-      prevRows.map((row) => {
-        if (row.id === params.id) {
-          let d = { ...row, [params.field]: color.hex };
-          showInPreview(d);
-          return d;
-        } else {
-          return row;
-        }
-      })
-    );
+    handleProcessRowUpdate(params,color.hex)
     // params.api.setEditCellValue({
     //   id: params.id,
     //   field: params.field,

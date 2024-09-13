@@ -15,8 +15,8 @@ const appRoutes = [
         displayText: "Rooms",
       },
       {
-        path: "/chat/messages",
-        displayText: "Messages",
+        path: "/chat/quiz",
+        displayText: "Quiz",
       },
       {
         path: "/chat/settings",

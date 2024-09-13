@@ -61,7 +61,7 @@ function ChatPage({ path }) {
         className="header flex justify-end items-center px-1.5 py-1 rounded-md mb-1 z-10"
         style={{ backgroundColor: bgColor, color: TextColor }}
       >
-        <p className="flex-1 text-xs">{data.name}</p>
+        <p className="flex-1 text-xs">{data?.name}</p>
         <FaChevronDown className="text-xs" />
       </div>
       <div
