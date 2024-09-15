@@ -21,5 +21,15 @@ export function useRequestApiAction() {
     return res;
   };
 
-  return { GET, POST }
+  const PUT = async (path, data) => {
+    const res = await axiosInstance.put(path, data);
+    return res;
+  };
+
+  const PATCH = async (path, data) => {
+    const res = await axiosInstance.patch(path, data);
+    return res;
+  };
+
+  return { GET, POST, PUT, PATCH }
 }

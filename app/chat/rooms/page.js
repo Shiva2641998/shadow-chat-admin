@@ -13,13 +13,11 @@ import { useAppDispatch } from "../../../store/store";
 import { DataGrid } from "@mui/x-data-grid";
 import { IoSave } from "react-icons/io5";
 
-
-
 function page() {
-  const { GET } = useRequestApiAction();
+  const { GET, PUT } = useRequestApiAction();
 
   const [rowData, setRowData] = useState([]);
-  const [updateRowValue, setupdateRowValue] = useState([])
+  const [updateRowValue, setupdateRowValue] = useState([]);
 
   const handleProcessRowUpdate = (params, color) => {
     // Update the row data with new color
@@ -36,8 +34,6 @@ function page() {
     );
   };
 
-
-
   const columns = [
     { field: "name", headerName: "Name", flex: 1 },
     {
@@ -49,8 +45,8 @@ function page() {
       field: "bgImage",
       headerName: "Bg Image",
       editable: false,
-      align: 'center',
-      headerAlign: 'center',
+      align: "center",
+      headerAlign: "center",
       flex: 1,
       renderCell: (params) => {
         const [editImage, setEditImage] = useState(false);
@@ -59,21 +55,20 @@ function page() {
             {editImage ? (
               <>
                 <input
-                className="h-8 rounded-md outline-none bg-white"
+                  className="h-8 rounded-md outline-none bg-white"
                   onChange={(e) => {
                     setRowData((prevRows) =>
-                      prevRows.map((row) =>{
-                        if(row.id === params.id){
+                      prevRows.map((row) => {
+                        if (row.id === params.id) {
                           let d = { ...row, [params.field]: e.target.value };
-                          showInPreview(d)
-                          return d
-                        }else{
-                          return row
+                          showInPreview(d);
+                          return d;
+                        } else {
+                          return row;
                         }
-                      }
-                      )
+                      })
                     );
-                    setEditImage(false)
+                    setEditImage(false);
                   }}
                 />
               </>
@@ -94,8 +89,8 @@ function page() {
       field: "primaryBgColor",
       headerName: "Primary Bg Color",
       editable: false,
-      align: 'center',
-      headerAlign: 'center',
+      align: "center",
+      headerAlign: "center",
       flex: 1,
       renderCell: (params) => {
         return (
@@ -111,8 +106,8 @@ function page() {
       field: "primaryTextColor",
       headerName: "Primary Text Color",
       editable: false,
-      align: 'center',
-      headerAlign: 'center',
+      align: "center",
+      headerAlign: "center",
       flex: 1,
       renderCell: (params) => {
         return (
@@ -126,24 +121,51 @@ function page() {
     },
 
     {
-      field: 'actions',
-      headerName: 'Actions',
+      field: "actions",
+      headerName: "Actions",
       width: 150,
-      align: 'center',
-      headerAlign: 'center',
+      align: "center",
+      headerAlign: "center",
       renderCell: (params) => {
         const hasChanged = updateRowValue.filter((row) => row.id === params.id);
-        return <div style={{ display: 'flex', justifyContent: 'center', alignItems: "center", height: "100%" }}>
-         {hasChanged?.length > 0 && <div onClick={() => updateRow(hasChanged)} className="tooltip" data-tip="Save">
-              <IoSave className="w-5 h-5 text-activePrimaryBgColor" />
-          </div>}
-        </div>
-}
+        return (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100%",
+            }}
+          >
+            {hasChanged?.length > 0 && (
+              <div
+                onClick={() => updateRow(params.row)}
+                className="tooltip"
+                data-tip="Save"
+              >
+                <IoSave className="w-5 h-5 text-activePrimaryBgColor" />
+              </div>
+            )}
+          </div>
+        );
+      },
     },
   ];
 
-  const updateRow = async (data) => {
-    // const { data } = await GET("/rooms");
+  const removeKey = (obj, keyToRemove) =>
+    Object.fromEntries(
+      Object.entries(obj).filter(([key]) => key !== keyToRemove)
+    );
+
+  const updateRow = async (item) => {
+    const newObj = removeKey(item, "messages");
+    console.log("item", newObj);
+    // delete item['messages']
+    const { data } = await PUT(`/rooms/rid=${item._id}`, newObj);
+    if (data.status) {
+      const hasChanged = updateRowValue.filter((row) => row.id !== data.id);
+      setupdateRowValue(hasChanged);
+    }
     // setRowData(
     //   data.data.map((item) => ({
     //     id: item._id, // Map _id to id
@@ -167,7 +189,7 @@ function page() {
   const showInPreview = (data) => {
     if (data) {
       console.log(data, "data");
-      setupdateRowValue((prev) => [...prev,data])
+      setupdateRowValue((prev) => [...prev, data]);
       dispatch(
         setPreviewDataInfo({
           type: "/chat/rooms",
@@ -190,7 +212,7 @@ function page() {
       // style={{ width: "100%", height: "100%" }}
       >
         <DataGrid
-        className="dataGridTable"
+          className="dataGridTable"
           rows={rowData}
           columns={columns}
           disableColumnMenu
@@ -204,17 +226,17 @@ function page() {
           pageSizeOptions={[5]}
           // processRowUpdate={handleProcessRowUpdate}
           sx={{
-            '& .MuiDataGrid-cell': {
-              overflow: 'visible',
+            "& .MuiDataGrid-cell": {
+              overflow: "visible",
             },
-            '& .MuiDataGrid-virtualScroller': {
-              overflow: 'visible',
+            "& .MuiDataGrid-virtualScroller": {
+              overflow: "visible",
             },
-            '& .MuiDataGrid-virtualScrollerRenderZone': {
-              overflow: 'visible',
+            "& .MuiDataGrid-virtualScrollerRenderZone": {
+              overflow: "visible",
             },
-            '& .MuiDataGrid-main': {
-              overflow: 'visible',
+            "& .MuiDataGrid-main": {
+              overflow: "visible",
             },
           }}
         />

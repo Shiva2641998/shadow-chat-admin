@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   authState: false,
   preview: false,
-  access_token: false,
+  access_token: {},
   previewData: {}
 };
 
@@ -18,6 +18,7 @@ export const themeSlice = createSlice({
       state.preview = !state.preview;
     },
     setAccessTokenInfo: (state, action) => {
+      console.log("login",action.payload)
       state.access_token = action.payload;
     },
     setPreviewDataInfo: (state, action) => {

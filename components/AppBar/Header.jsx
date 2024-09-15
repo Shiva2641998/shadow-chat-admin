@@ -6,19 +6,23 @@ import { setAccessTokenInfo } from "../../store/themeSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { FaBell } from "react-icons/fa6";
 
-
 function Header({ sidebarClick, open }) {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const accessToken = useSelector((state) => state.theme.access_tokken);
   // const navigate = use
+  console.log(accessToken, "accessToken");
 
-  const {POST} = useRequestApiAction();
+  const { POST } = useRequestApiAction();
+
   const loginStart = async (data) => {
     const res = await POST(`/users/login`, {
       userName: "shivam",
       password: "123456",
     });
-    dispatch(setAccessTokenInfo(res.data.token))
+    console.log(res.data,"res.data::")
+    if(res.data.status){
+      dispatch(setAccessTokenInfo(res.data.data.token));
+    }
     // setUserInfoItems(res.data._doc);
     // setRoute("chatlist");
   };
@@ -46,7 +50,9 @@ function Header({ sidebarClick, open }) {
           />
         </div>
         <div className="bg-localColor p-2 rounded-lg text-activePrimaryBgColor mx-3 relative cursor-pointer">
-        <div className="badge bg-activePrimaryBgColor text-localColor badge-xs absolute -top-2 -right-2 w-5 h-5">5</div>
+          <div className="badge bg-activePrimaryBgColor text-localColor badge-xs absolute -top-2 -right-2 w-5 h-5">
+            5
+          </div>
           <FaBell className="w-5 h-5" />
         </div>
         <div className="dropdown dropdown-end">
@@ -64,20 +70,24 @@ function Header({ sidebarClick, open }) {
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] bg-white mt-3 w-52 p-2 shadow"
           >
-            {accessToken == false && <li onClick={loginStart}>
-              <span className="justify-between">
-                Login
-                <span className="badge">New</span>
-              </span>
-            </li>}
+            {!accessToken && (
+              <li onClick={loginStart}>
+                <span className="justify-between">
+                  Login
+                  <span className="badge">New</span>
+                </span>
+              </li>
+            )}
             <li>
               <a>Settings</a>
             </li>
-            {accessToken != false && <li>
-              <a>Logout</a>
-            </li>}
+            {accessToken && (
+              <li>
+                <a>Logout</a>
+              </li>
+            )}
           </ul>
         </div>
       </div>

@@ -13,23 +13,35 @@ import { useAppDispatch } from "../../../store/store";
 import { DataGrid } from "@mui/x-data-grid";
 import { IoSave } from "react-icons/io5";
 import { FaCodePullRequest } from "react-icons/fa6";
+import Modal from "@mui/material/Modal";
+import { Box, Typography } from "@mui/material";
 
-
-
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  borderRadius: 4,
+  boxShadow: 24,
+  p: 4,
+};
 
 function page() {
-  const { GET } = useRequestApiAction();
+  const { GET, PUT } = useRequestApiAction();
 
   const [rowData, setRowData] = useState([]);
-  const [updateRowValue, setupdateRowValue] = useState([])
-
+  const [updateRowValue, setupdateRowValue] = useState([]);
+  const [approveQuizData, setapproveQuizData] = useState(false)
+console.log(approveQuizData,"approveQuizData")
   const handleProcessRowUpdate = (params, index, field, color) => {
     // Update the row data with new color
-    console.log(params,"params::")
+    console.log(params, "params::");
     setRowData((prevRows) =>
       prevRows.map((row) => {
         if (row.id === params.id) {
-          const updatedOptions = row.options.map((option, i) => 
+          const updatedOptions = row.options.map((option, i) =>
             i === index ? { ...option, [field]: color } : option
           );
           let d = { ...row, options: updatedOptions };
@@ -43,14 +55,15 @@ function page() {
     );
   };
 
-  console.log(rowData,"rowData")
-
   const columns = [
-    { field: "name", headerName: "Room Name", flex: 1,
-    renderCell: (params) => {
-      return <span>{params.row.room.name}</span>
-    }
-  },
+    {
+      field: "name",
+      headerName: "Room Name",
+      flex: 1,
+      renderCell: (params) => {
+        return <span>{params.row.room.name}</span>;
+      },
+    },
     {
       field: "question",
       headerName: "Question",
@@ -60,8 +73,8 @@ function page() {
       field: "bgImage",
       headerName: "Bg Image",
       editable: false,
-      align: 'center',
-      headerAlign: 'center',
+      align: "center",
+      headerAlign: "center",
       flex: 1,
       renderCell: (params) => {
         const [editImage, setEditImage] = useState(false);
@@ -70,21 +83,20 @@ function page() {
             {editImage ? (
               <>
                 <input
-                className="h-8 rounded-md outline-none bg-white"
+                  className="h-8 rounded-md outline-none bg-white"
                   onChange={(e) => {
                     setRowData((prevRows) =>
-                      prevRows.map((row) =>{
-                        if(row.id === params.id){
+                      prevRows.map((row) => {
+                        if (row.id === params.id) {
                           let d = { ...row, bgImage: e.target.value };
-                          showInPreview(d)
-                          return d
-                        }else{
-                          return row
+                          showInPreview(d);
+                          return d;
+                        } else {
+                          return row;
                         }
-                      }
-                      )
+                      })
                     );
-                    setEditImage(false)
+                    setEditImage(false);
                   }}
                 />
               </>
@@ -105,25 +117,29 @@ function page() {
       field: "Option1",
       headerName: "Option1 / Bg / Text color",
       editable: false,
-      align: 'center',
-      headerAlign: 'center',
+      align: "center",
+      headerAlign: "center",
       flex: 1,
       renderCell: (params) => {
         return (
           <div className="flex items-center justify-center">
             <span>{params.row.options[0].text}</span>
             <div className="px-2">
-            <ColorPickerRenderer
-              params={params}
-              setRowData={setRowData}
-              handleProcessRowUpdate={(pra, color) => handleProcessRowUpdate(params, 0, 'bgColor',color)}
+              <ColorPickerRenderer
+                params={params}
+                setRowData={setRowData}
+                handleProcessRowUpdate={(pra, color) =>
+                  handleProcessRowUpdate(params, 0, "bgColor", color)
+                }
               />
             </div>
             <ColorPickerRenderer
               params={params}
               setRowData={setRowData}
-              handleProcessRowUpdate={(pra, color) => handleProcessRowUpdate(params, 0, 'textColor',color)}
-              />
+              handleProcessRowUpdate={(pra, color) =>
+                handleProcessRowUpdate(params, 0, "textColor", color)
+              }
+            />
           </div>
         );
       },
@@ -132,25 +148,29 @@ function page() {
       field: "Option2",
       headerName: "Option2 / Bg / Text color",
       editable: false,
-      align: 'center',
-      headerAlign: 'center',
+      align: "center",
+      headerAlign: "center",
       flex: 1,
       renderCell: (params) => {
         return (
           <div className="flex items-center justify-center">
             <span>{params.row.options[1].text}</span>
             <div className="px-2">
-             <ColorPickerRenderer
-              params={params}
-              setRowData={setRowData}
-              handleProcessRowUpdate={(pra, color) => handleProcessRowUpdate(params, 1, 'bgColor',color)}
+              <ColorPickerRenderer
+                params={params}
+                setRowData={setRowData}
+                handleProcessRowUpdate={(pra, color) =>
+                  handleProcessRowUpdate(params, 1, "bgColor", color)
+                }
               />
             </div>
             <ColorPickerRenderer
               params={params}
               setRowData={setRowData}
-              handleProcessRowUpdate={(pra, color) => handleProcessRowUpdate(params, 1, 'textColor',color)}
-              />
+              handleProcessRowUpdate={(pra, color) =>
+                handleProcessRowUpdate(params, 1, "textColor", color)
+              }
+            />
           </div>
         );
       },
@@ -159,25 +179,33 @@ function page() {
       field: "Option3",
       headerName: "Option3 / Bg / Text color",
       editable: false,
-      align: 'center',
-      headerAlign: 'center',
+      align: "center",
+      headerAlign: "center",
       flex: 1,
       renderCell: (params) => {
         return (
           <div className="flex items-center justify-center">
             <span>{params.row.options[2]?.text ?? "---"}</span>
-            {params.row.options[2]?.text && <><div className="px-2">
-             <ColorPickerRenderer
-              params={params}
-              setRowData={setRowData}
-              handleProcessRowUpdate={(pra, color) => handleProcessRowUpdate(params, 2, 'bgColor',color)}
-              />
-            </div>
-            <ColorPickerRenderer
-              params={params}
-              setRowData={setRowData}
-              handleProcessRowUpdate={(pra, color) => handleProcessRowUpdate(params, 2, 'textColor',color)}
-              /></>}
+            {params.row.options[2]?.text && (
+              <>
+                <div className="px-2">
+                  <ColorPickerRenderer
+                    params={params}
+                    setRowData={setRowData}
+                    handleProcessRowUpdate={(pra, color) =>
+                      handleProcessRowUpdate(params, 2, "bgColor", color)
+                    }
+                  />
+                </div>
+                <ColorPickerRenderer
+                  params={params}
+                  setRowData={setRowData}
+                  handleProcessRowUpdate={(pra, color) =>
+                    handleProcessRowUpdate(params, 2, "textColor", color)
+                  }
+                />
+              </>
+            )}
           </div>
         );
       },
@@ -186,68 +214,95 @@ function page() {
       field: "Options",
       headerName: "Option4 / Bg / Text color",
       editable: false,
-      align: 'center',
-      headerAlign: 'center',
+      align: "center",
+      headerAlign: "center",
       flex: 1,
       renderCell: (params) => {
         return (
           <div className="flex items-center justify-center">
             <span>{params.row.options[3]?.text ?? "---"}</span>
-            {params.row.options[3]?.text && <><div className="px-2">
-             <ColorPickerRenderer
-              params={params}
-              setRowData={setRowData}
-              handleProcessRowUpdate={(pra, color) => handleProcessRowUpdate(params, 3, 'bgColor',color)}
-              />
-            </div>
-            <ColorPickerRenderer
-              params={params}
-              setRowData={setRowData}
-              handleProcessRowUpdate={(pra, color) => handleProcessRowUpdate(params, 3, 'textColor',color)}
-              /></>}
+            {params.row.options[3]?.text && (
+              <>
+                <div className="px-2">
+                  <ColorPickerRenderer
+                    params={params}
+                    setRowData={setRowData}
+                    handleProcessRowUpdate={(pra, color) =>
+                      handleProcessRowUpdate(params, 3, "bgColor", color)
+                    }
+                  />
+                </div>
+                <ColorPickerRenderer
+                  params={params}
+                  setRowData={setRowData}
+                  handleProcessRowUpdate={(pra, color) =>
+                    handleProcessRowUpdate(params, 3, "textColor", color)
+                  }
+                />
+              </>
+            )}
           </div>
         );
       },
     },
-    
 
     {
-      field: 'actions',
-      headerName: 'Actions',
+      field: "actions",
+      headerName: "Actions",
       width: 150,
-      align: 'center',
-      headerAlign: 'center',
+      align: "center",
+      headerAlign: "center",
       renderCell: (params) => {
         const hasChanged = updateRowValue.filter((row) => row.id === params.id);
-        return <div style={{ display: 'flex', justifyContent: 'center', alignItems: "center", height: "100%" }}>
-         {hasChanged?.length > 0 && <div onClick={() => updateRow(hasChanged)} className="tooltip" data-tip="Save">
-              <IoSave className="w-5 h-5 text-activePrimaryBgColor" />
-          </div>}
-          <div onClick={()=>document.getElementById('my_modal_2').showModal()} className="tooltip" data-tip="Approve">
+        return (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100%",
+            }}
+          >
+            {hasChanged?.length > 0 && (
+              <div
+                onClick={() => updateRow(hasChanged)}
+                className="tooltip"
+                data-tip="Save"
+              >
+                <IoSave className="w-5 h-5 text-activePrimaryBgColor" />
+              </div>
+            )}
+            <div
+              onClick={() => setapproveQuizData(params.row)}
+              className="tooltip"
+              data-tip="Approve"
+            >
               <FaCodePullRequest className="w-5 h-5 mx-2 text-secondaryBgColor" />
+            </div>
           </div>
-        </div>
-}
+        );
+      },
     },
   ];
 
   const updateRow = async (data) => {
-    // const { data } = await GET("/rooms");
-    // setRowData(
-    //   data.data.map((item) => ({
-    //     id: item._id, // Map _id to id
-    //     ...item,
-    //   }))
-    // );
+    
   };
 
-  const approveRow = async (data) => {
-    
+  const approveRow = async () => {
+    const endTime = document.querySelector("#meeting-time").value;
+    console.log(endTime,"endTime")
+    const dataRes = { roomId: approveQuizData.room.id, endTime: endTime }
+    const { data } = await PUT(`/quiz/${approveQuizData.id}`, dataRes);
+    console.log("data.data", data.data);
+    if(data.status){
+      setapproveQuizData(false)
+    }
   };
 
   const getRoomList = async () => {
     const { data } = await GET("/quiz");
-    console.log("data.data",data.data)
+    console.log("data.data", data.data);
     setRowData(
       data.data.map((item) => ({
         id: item._id, // Map _id to id
@@ -261,7 +316,7 @@ function page() {
   const showInPreview = (data) => {
     if (data) {
       console.log(data, "data");
-      setupdateRowValue((prev) => [...prev,data])
+      setupdateRowValue((prev) => [...prev, data]);
       dispatch(
         setPreviewDataInfo({
           type: "/chat/quiz",
@@ -277,34 +332,42 @@ function page() {
 
   return (
     <div className="h-full">
-      <dialog id="my_modal_2" className="modal approveTimeQuiz">
-  <div className="modal-box relative flex flex-col">
-    <h3 className="font-bold text-lg mb-4">Quiz Timer!</h3>
-    <input
-    className="outline-none border-2 rounded-lg border-slate-300 px-3 py-3"
-  type="datetime-local"
-  id="meeting-time"
-  name="meeting-time"
-  value="2018-06-12T19:30"
-  min="2018-06-07T00:00"
-  max="2018-06-14T00:00" />
-  <div className="flex justify-end mt-4">
-  <button className="btn w-fit btn-primary" onClick={approveRow}>Approve</button>
-  </div>
-  </div>
-  {/* <form method="dialog" className="modal-backdrop">
-    <button>close</button>
-  </form> */}
-</dialog>
+     {approveQuizData && <Modal
+        open={true}
+        // onClose={() => setapproveQuizData(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <div className="relative flex flex-col">
+            <h3 className="font-bold text-lg mb-4">Quiz Timer!</h3>
+            <input
+              className="outline-none border-2 rounded-lg border-slate-300 px-3 py-3"
+              type="datetime-local"
+              id="meeting-time"
+              name="meeting-time"
+            />
+            <div className="flex justify-end mt-4">
+              <button className="btn w-fit bg-localColor hover:bg-localColor text-secondaryBgColor mr-3" onClick={() => setapproveQuizData(false)}>
+                Close
+              </button>
+              <button className="btn w-fit bg-activePrimaryBgColor text-localColor" onClick={approveRow}>
+                Approve
+              </button>
+            </div>
+          </div>
+        </Box>
+      </Modal>}
+
       <Title title="Quiz" themeView={true} />
       <hr className="my-2 mb-5 text-primaryBgColor" />
       <div
-      className="data-grid-container"
-      // className={"ag-theme-quartz"}
-      // style={{ width: "100%", height: "100%" }}
+        className="data-grid-container"
+        // className={"ag-theme-quartz"}
+        // style={{ width: "100%", height: "100%" }}
       >
         <DataGrid
-        className="dataGridTable overflow-scroll"
+          className="dataGridTable overflow-scroll"
           rows={rowData}
           columns={columns}
           disableColumnMenu
@@ -319,21 +382,21 @@ function page() {
           processRowUpdate={handleProcessRowUpdate}
           componentsProps={{
             virtualScroller: {
-              style: { overflow: 'auto' }, // Customize scroller styles
+              style: { overflow: "auto" }, // Customize scroller styles
             },
           }}
           sx={{
-            '& .MuiDataGrid-cell': {
-              overflow: 'visible',
+            "& .MuiDataGrid-cell": {
+              overflow: "visible",
             },
-            '& .MuiDataGrid-virtualScroller': {
-              overflow: 'visible',
+            "& .MuiDataGrid-virtualScroller": {
+              overflow: "visible",
             },
-            '& .MuiDataGrid-virtualScrollerRenderZone': {
-              overflow: 'visible',
+            "& .MuiDataGrid-virtualScrollerRenderZone": {
+              overflow: "visible",
             },
-            '& .MuiDataGrid-main': {
-              overflow: 'visible',
+            "& .MuiDataGrid-main": {
+              overflow: "visible",
             },
           }}
         />

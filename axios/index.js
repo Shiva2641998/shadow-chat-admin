@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 
-// const baseURL = import.meta.env.VITE_API_URL == "local" ? "http://localhost:8080/api" : 'https://chat-app-backend-azure-beta.vercel.app/api'
+// const baseURL = "http://localhost:8080/api";
 
 const baseURL = 'https://chat-app-backend-2miw.onrender.com/api'
 
@@ -18,7 +18,7 @@ const useCreateAxiosInstance = () => {
 	const accessToken = useSelector((state) => state.theme.access_tokken);
   
 	return axios.create({
-	  baseURL: 'https://chat-app-backend-2miw.onrender.com/api',
+	  baseURL: baseURL,
 	  timeout: 8000,
 	  headers: {
 		Accept: 'application/json',
