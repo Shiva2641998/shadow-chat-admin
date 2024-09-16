@@ -15,8 +15,8 @@ const baseURL = 'https://chat-app-backend-2miw.onrender.com/api'
 // });
 
 const useCreateAxiosInstance = () => {
-	const accessToken = useSelector((state) => state.theme.access_tokken);
-  
+	const accessToken = useSelector((state) => state.theme.access_token);
+
 	return axios.create({
 	  baseURL: baseURL,
 	  timeout: 8000,

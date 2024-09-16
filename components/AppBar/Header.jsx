@@ -20,7 +20,7 @@ function Header({ sidebarClick, open }) {
       password: "123456",
     });
     console.log(res.data,"res.data::")
-    if(res.data.status){
+    if(res.data.success){
       dispatch(setAccessTokenInfo(res.data.data.token));
     }
     // setUserInfoItems(res.data._doc);

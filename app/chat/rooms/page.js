@@ -161,7 +161,7 @@ function page() {
     const newObj = removeKey(item, "messages");
     console.log("item", newObj);
     // delete item['messages']
-    const { data } = await PUT(`/rooms/rid=${item._id}`, newObj);
+    const { data } = await PUT(`/rooms/updateRow/${item._id}`, newObj);
     if (data.status) {
       const hasChanged = updateRowValue.filter((row) => row.id !== data.id);
       setupdateRowValue(hasChanged);

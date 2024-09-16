@@ -265,7 +265,7 @@ console.log(approveQuizData,"approveQuizData")
           >
             {hasChanged?.length > 0 && (
               <div
-                onClick={() => updateRow(hasChanged)}
+                onClick={() => updateRow(params.row)}
                 className="tooltip"
                 data-tip="Save"
               >
@@ -285,8 +285,12 @@ console.log(approveQuizData,"approveQuizData")
     },
   ];
 
-  const updateRow = async (data) => {
-    
+  const updateRow = async (item) => {
+    const { data } = await PUT(`/quiz/updateQuizRow/${item._id}`, item);
+    if (data.status) {
+      const hasChanged = updateRowValue.filter((row) => row.id !== data.id);
+      setupdateRowValue(hasChanged);
+    }
   };
 
   const approveRow = async () => {
