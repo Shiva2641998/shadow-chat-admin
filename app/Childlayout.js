@@ -29,6 +29,7 @@ function Childlayout({ children }) {
           ${
               preview ? "w-[80%]" : "w-[100%]"
             }
+            transition-all
              mr-5`}>
               {children}
               </div>
@@ -36,7 +37,7 @@ function Childlayout({ children }) {
             className={`flex justify-center items-center ${
               preview ? "w-[20%]" : "w-0"
             }
-             h-full transition-all overflow-hidden`}
+             h-full overflow-hidden`}
           >
             <div className="relative flex justify-center items-center ">
               <Image src={cellPhone} className="w-52 h-96" />
