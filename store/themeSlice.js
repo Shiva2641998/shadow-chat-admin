@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  sidebar: {
+    isDrawerOpen: false,
+    pathName: '/',
+  },
   authState: false,
   preview: false,
   access_token: {},
@@ -13,6 +17,11 @@ export const themeSlice = createSlice({
   reducers: {
     setAuthState: (state, action) => {
       state.authState = action.payload;
+    },
+    setSidebar: (state, action) => {
+      console.log(action.payload,"state")
+      state.sidebar.isDrawerOpen = !state.sidebar?.isDrawerOpen;
+      state.sidebar.pathName = action.payload ?? state.sidebar.pathName;
     },
     previewToggle: (state) => {
       state.preview = !state.preview;
@@ -30,5 +39,5 @@ export const themeSlice = createSlice({
   },
 });
 
-export const { setAuthState, previewToggle, setAccessTokenInfo, setPreviewDataInfo } = themeSlice.actions;
+export const { setAuthState, previewToggle, setAccessTokenInfo, setPreviewDataInfo, setSidebar } = themeSlice.actions;
 export const themeReducer = themeSlice.reducer;

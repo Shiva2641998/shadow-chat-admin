@@ -16,19 +16,22 @@ function Childlayout({ children }) {
   };
   return (
     <div className="flex h-screen bg-slate-100">
-      <div
-        className={`transition-all ${
-          sidebarShow ? "w-80 visible" : "w-0 p-0 invisible"
-        }`}
-      >
-        <Sidebar />
-      </div>
+      {/* <div
+        // className={`transition-all w-0 p-0`}
+      > */}
+        {/* <Sidebar /> */}
+      {/* </div> */}
       <div className="w-full h-full">
         <Header sidebarClick={sidebarHandle} open={sidebarShow} />
         <div className="flex px-5 h-[80%]">
-          <div className={`${
+          <Sidebar />
+          <div className={`
+          ${
               preview ? "w-[80%]" : "w-[100%]"
-            } mr-5`}>{children}</div>
+            }
+             mr-5`}>
+              {children}
+              </div>
           <div
             className={`flex justify-center items-center ${
               preview ? "w-[20%]" : "w-0"

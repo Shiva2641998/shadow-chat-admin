@@ -1,12 +1,13 @@
-import { IoIosChatbubbles } from "react-icons/io";
-import { IoColorFill } from "react-icons/io5";
+import { IoChatbubblesOutline } from "react-icons/io5";
+import { VscSymbolColor } from "react-icons/vsc";
+
 
 const appRoutes = [
   {
-    path: "/chat/rooms",
+    path: "/chat/",
     sidebarProps: {
       displayText: "Chat",
-      icon: <IoIosChatbubbles />,
+      Icon: IoChatbubblesOutline,
     },
     child: [
       {
@@ -18,34 +19,30 @@ const appRoutes = [
         path: "/chat/quiz",
         displayText: "Quiz",
       },
-      {
-        path: "/chat/settings",
-        displayText: "Settings",
-      },
     ],
   },
-  {
-    path: "/theme/header",
-    sidebarProps: {
-      displayText: "Theme",
-      icon: <IoColorFill />,
-    },
-    child: [
-      {
-        index: true,
-        path: "/theme/header",
-        displayText: "Header",
-      },
-      {
-        path: "/theme/chatlist",
-        displayText: "ChatList",
-      },
-      {
-        path: "/theme/chat",
-        displayText: "Chat",
-      },
-    ],
-  },
+  // {
+  //   path: "/theme/",
+  //   sidebarProps: {
+  //     displayText: "Theme",
+  //     Icon: VscSymbolColor,
+  //   },
+  //   child: [
+  //     {
+  //       index: true,
+  //       path: "/theme/header",
+  //       displayText: "Header",
+  //     },
+  //     {
+  //       path: "/theme/chatlist",
+  //       displayText: "ChatList",
+  //     },
+  //     {
+  //       path: "/theme/chat",
+  //       displayText: "Chat",
+  //     },
+  //   ],
+  // },
   // Add more routes as needed
 ];
 

@@ -2,9 +2,10 @@ import React from "react";
 import { IoMdClose } from "react-icons/io";
 import { RiMenu2Fill } from "react-icons/ri";
 import { useRequestApiAction } from "../../axios/requests/useRequestApiAction";
-import { setAccessTokenInfo } from "../../store/themeSlice";
+import { setAccessTokenInfo, setSidebar } from "../../store/themeSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { FaBell } from "react-icons/fa6";
+import Sidebar from "./Sidebar";
 
 function Header({ sidebarClick, open }) {
   const dispatch = useDispatch();
@@ -27,15 +28,21 @@ function Header({ sidebarClick, open }) {
     // setRoute("chatlist");
   };
 
+  const handleSidebarClick = () =>{
+    
+    dispatch(setSidebar())
+  }
+
   return (
     <div className="navbar bg-primaryBgColor shadow-lg text-secondaryBgColor">
+    {/* <Sidebar /> */}
       <div className="flex-1">
-        <div onClick={sidebarClick} className="cursor-pointer">
-          {open ? (
+        <div onClick={handleSidebarClick} className="cursor-pointer">
+          {/* {open ? (
             <IoMdClose className="text-secondaryBgColor mx-3 text-3xl" />
-          ) : (
+          ) : ( */}
             <RiMenu2Fill className="text-secondaryBgColor mx-3 text-3xl" />
-          )}
+          {/* )} */}
         </div>
         {!open && (
           <a className="text-secondaryBgColor text-xl font-bold">Magic Chat</a>

@@ -33,8 +33,8 @@ function page() {
 
   const [rowData, setRowData] = useState([]);
   const [updateRowValue, setupdateRowValue] = useState([]);
-  const [approveQuizData, setapproveQuizData] = useState(false)
-console.log(approveQuizData,"approveQuizData")
+  const [approveQuizData, setapproveQuizData] = useState(false);
+  console.log(approveQuizData, "approveQuizData");
   const handleProcessRowUpdate = (params, index, field, color) => {
     // Update the row data with new color
     console.log(params, "params::");
@@ -52,6 +52,81 @@ console.log(approveQuizData,"approveQuizData")
           return row;
         }
       })
+    );
+  };
+
+  const colorPicker = (params, index) => {
+    console.log(params.row);
+    const info = params.row.options[index];
+    const [colorShow, setColorShow] = useState(false);
+    return params.row.options[index]?.text ? (
+      <>
+        <div className="flex items-center flex-col">
+          <div className="flex items-center">
+          <input
+            type="checkbox"
+            checked={colorShow}
+            onChange={() => {
+              setColorShow(!colorShow);
+            }}
+            className="toggle toggle-sm toggle-primary mr-2"
+          />
+          <span>Change Color</span>
+          </div>
+          {colorShow ? (
+            <>
+              <div
+                style={{
+                  lineHeight: "10px",
+                  // backgroundColor: info && info?.bgColor, color: info && info?.textColor
+                }}
+                className="w-full flex justify-evenly flex-col items-start"
+              >
+                <div className="border-2 border-slate-300 mb-2 pt-2 rounded-md w-full">
+                  <span className="text-start truncate overflow-hidden text-ellipsis w-full">Bg Color</span>
+                  <ColorPickerRenderer
+                    className="mt-2"
+                    subclassName="w-full"
+                    defaultColor={info?.bgColor}
+                    params={params}
+                    setRowData={setRowData}
+                    handleProcessRowUpdate={(pra, color) =>
+                      handleProcessRowUpdate(params, index, "bgColor", color)
+                    }
+                  />
+                </div>
+                {/* </div> */}
+                <div className="border-2 border-slate-300 pt-2 rounded-md w-full">
+                  <span>Text Color:</span>
+                  <ColorPickerRenderer
+                    className="mt-2"
+                    defaultColor={info?.textColor}
+                    subclassName="w-full"
+                    params={params}
+                    setRowData={setRowData}
+                    handleProcessRowUpdate={(pra, color) =>
+                      handleProcessRowUpdate(params, index, "textColor", color)
+                    }
+                  />
+                </div>
+              </div>
+            </>
+          ) : (
+            <span
+            style={{
+              lineHeight: "20px",
+              height: "100%",
+              backgroundColor: info && info?.bgColor, color: info && info?.textColor
+            }}
+              className="text-center px-1 rounded-md font-bold italic h-full break-words whitespace-normal truncate w-full"
+            >
+              {params.row.options[index].text}
+            </span>
+          )}
+        </div>
+      </>
+    ) : (
+      <span>----</span>
     );
   };
 
@@ -115,134 +190,46 @@ console.log(approveQuizData,"approveQuizData")
     },
     {
       field: "Option1",
-      headerName: "Option1 / Bg / Text color",
+      headerName: "Option 1",
       editable: false,
       align: "center",
       headerAlign: "center",
       flex: 1,
       renderCell: (params) => {
-        return (
-          <div className="flex items-center justify-center">
-            <span>{params.row.options[0].text}</span>
-            <div className="px-2">
-              <ColorPickerRenderer
-                params={params}
-                setRowData={setRowData}
-                handleProcessRowUpdate={(pra, color) =>
-                  handleProcessRowUpdate(params, 0, "bgColor", color)
-                }
-              />
-            </div>
-            <ColorPickerRenderer
-              params={params}
-              setRowData={setRowData}
-              handleProcessRowUpdate={(pra, color) =>
-                handleProcessRowUpdate(params, 0, "textColor", color)
-              }
-            />
-          </div>
-        );
+        return colorPicker(params, 0);
       },
     },
     {
       field: "Option2",
-      headerName: "Option2 / Bg / Text color",
+      headerName: "Option 2",
       editable: false,
       align: "center",
       headerAlign: "center",
       flex: 1,
       renderCell: (params) => {
-        return (
-          <div className="flex items-center justify-center">
-            <span>{params.row.options[1].text}</span>
-            <div className="px-2">
-              <ColorPickerRenderer
-                params={params}
-                setRowData={setRowData}
-                handleProcessRowUpdate={(pra, color) =>
-                  handleProcessRowUpdate(params, 1, "bgColor", color)
-                }
-              />
-            </div>
-            <ColorPickerRenderer
-              params={params}
-              setRowData={setRowData}
-              handleProcessRowUpdate={(pra, color) =>
-                handleProcessRowUpdate(params, 1, "textColor", color)
-              }
-            />
-          </div>
-        );
+        return colorPicker(params, 1);
       },
     },
     {
       field: "Option3",
-      headerName: "Option3 / Bg / Text color",
+      headerName: "Option 3",
       editable: false,
       align: "center",
       headerAlign: "center",
       flex: 1,
       renderCell: (params) => {
-        return (
-          <div className="flex items-center justify-center">
-            <span>{params.row.options[2]?.text ?? "---"}</span>
-            {params.row.options[2]?.text && (
-              <>
-                <div className="px-2">
-                  <ColorPickerRenderer
-                    params={params}
-                    setRowData={setRowData}
-                    handleProcessRowUpdate={(pra, color) =>
-                      handleProcessRowUpdate(params, 2, "bgColor", color)
-                    }
-                  />
-                </div>
-                <ColorPickerRenderer
-                  params={params}
-                  setRowData={setRowData}
-                  handleProcessRowUpdate={(pra, color) =>
-                    handleProcessRowUpdate(params, 2, "textColor", color)
-                  }
-                />
-              </>
-            )}
-          </div>
-        );
+        return colorPicker(params, 2);
       },
     },
     {
       field: "Options",
-      headerName: "Option4 / Bg / Text color",
+      headerName: "Option 4",
       editable: false,
       align: "center",
       headerAlign: "center",
       flex: 1,
       renderCell: (params) => {
-        return (
-          <div className="flex items-center justify-center">
-            <span>{params.row.options[3]?.text ?? "---"}</span>
-            {params.row.options[3]?.text && (
-              <>
-                <div className="px-2">
-                  <ColorPickerRenderer
-                    params={params}
-                    setRowData={setRowData}
-                    handleProcessRowUpdate={(pra, color) =>
-                      handleProcessRowUpdate(params, 3, "bgColor", color)
-                    }
-                  />
-                </div>
-                <ColorPickerRenderer
-                  params={params}
-                  setRowData={setRowData}
-                  handleProcessRowUpdate={(pra, color) =>
-                    handleProcessRowUpdate(params, 3, "textColor", color)
-                  }
-                />
-              </>
-            )}
-          </div>
-        );
+        return colorPicker(params, 3);
       },
     },
 
@@ -295,12 +282,12 @@ console.log(approveQuizData,"approveQuizData")
 
   const approveRow = async () => {
     const endTime = document.querySelector("#meeting-time").value;
-    console.log(endTime,"endTime")
-    const dataRes = { roomId: approveQuizData.room.id, endTime: endTime }
+    console.log(endTime, "endTime");
+    const dataRes = { roomId: approveQuizData.room.id, endTime: endTime };
     const { data } = await PUT(`/quiz/${approveQuizData.id}`, dataRes);
     console.log("data.data", data.data);
-    if(data.status){
-      setapproveQuizData(false)
+    if (data.status) {
+      setapproveQuizData(false);
     }
   };
 
@@ -336,32 +323,40 @@ console.log(approveQuizData,"approveQuizData")
 
   return (
     <div className="h-full">
-     {approveQuizData && <Modal
-        open={true}
-        // onClose={() => setapproveQuizData(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <div className="relative flex flex-col">
-            <h3 className="font-bold text-lg mb-4">Quiz Timer!</h3>
-            <input
-              className="outline-none border-2 rounded-lg border-slate-300 px-3 py-3"
-              type="datetime-local"
-              id="meeting-time"
-              name="meeting-time"
-            />
-            <div className="flex justify-end mt-4">
-              <button className="btn w-fit bg-localColor hover:bg-localColor text-secondaryBgColor mr-3" onClick={() => setapproveQuizData(false)}>
-                Close
-              </button>
-              <button className="btn w-fit bg-activePrimaryBgColor text-localColor" onClick={approveRow}>
-                Approve
-              </button>
+      {approveQuizData && (
+        <Modal
+          open={true}
+          // onClose={() => setapproveQuizData(false)}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <div className="relative flex flex-col">
+              <h3 className="font-bold text-lg mb-4">Quiz Timer!</h3>
+              <input
+                className="outline-none border-2 rounded-lg border-slate-300 px-3 py-3"
+                type="datetime-local"
+                id="meeting-time"
+                name="meeting-time"
+              />
+              <div className="flex justify-end mt-4">
+                <button
+                  className="btn w-fit bg-localColor hover:bg-localColor text-secondaryBgColor mr-3"
+                  onClick={() => setapproveQuizData(false)}
+                >
+                  Close
+                </button>
+                <button
+                  className="btn w-fit bg-activePrimaryBgColor text-localColor"
+                  onClick={approveRow}
+                >
+                  Approve
+                </button>
+              </div>
             </div>
-          </div>
-        </Box>
-      </Modal>}
+          </Box>
+        </Modal>
+      )}
 
       <Title title="Quiz" themeView={true} />
       <hr className="my-2 mb-5 text-primaryBgColor" />
@@ -373,6 +368,7 @@ console.log(approveQuizData,"approveQuizData")
         <DataGrid
           className="dataGridTable overflow-scroll"
           rows={rowData}
+          // rowHeight={200}
           columns={columns}
           disableColumnMenu
           initialState={{
@@ -390,17 +386,27 @@ console.log(approveQuizData,"approveQuizData")
             },
           }}
           sx={{
+            "& .MuiDataGrid-row": {
+              minHeight: "200px !important", // Apply a minimum height to each cell
+            },
+            "& .MuiDataGrid-virtualScrollerContent": {
+              minHeight: "200px", // Apply a minimum height to each cell
+            },
             "& .MuiDataGrid-cell": {
               overflow: "visible",
+              minHeight: "200px",
             },
             "& .MuiDataGrid-virtualScroller": {
               overflow: "visible",
+              minHeight: "200px",
             },
             "& .MuiDataGrid-virtualScrollerRenderZone": {
               overflow: "visible",
+              minHeight: "200px",
             },
             "& .MuiDataGrid-main": {
               overflow: "visible",
+              minHeight: "200px",
             },
           }}
         />

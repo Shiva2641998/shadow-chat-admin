@@ -95,6 +95,7 @@ function page() {
       renderCell: (params) => {
         return (
           <ColorPickerRenderer
+          className="h-full"
             params={params}
             setRowData={setRowData}
             handleProcessRowUpdate={handleProcessRowUpdate}
@@ -112,6 +113,7 @@ function page() {
       renderCell: (params) => {
         return (
           <ColorPickerRenderer
+            className="h-full"
             params={params}
             setRowData={setRowData}
             handleProcessRowUpdate={handleProcessRowUpdate}
@@ -204,7 +206,7 @@ function page() {
   }, []);
 
   return (
-    <div className="h-full">
+    <div className="h-full ">
       <Title title="Room" themeView={true} />
       <hr className="my-2 mb-5 text-primaryBgColor" />
       <div
