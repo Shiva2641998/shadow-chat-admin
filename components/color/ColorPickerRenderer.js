@@ -6,7 +6,6 @@ const ColorPickerRenderer = ({ params, setRowData, handleProcessRowUpdate, class
   const pickerRef = useRef(null);
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [color, setColor] = useState(params.value ?? defaultColor);
-console.log(params,"params")
   const handleClickOutside = (event) => {
     if (pickerRef.current && !pickerRef.current.contains(event.target)) {
       setDisplayColorPicker(false);

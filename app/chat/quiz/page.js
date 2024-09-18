@@ -15,6 +15,7 @@ import { IoSave } from "react-icons/io5";
 import { FaCodePullRequest } from "react-icons/fa6";
 import Modal from "@mui/material/Modal";
 import { Box, Typography } from "@mui/material";
+import { toast } from "react-toastify";
 
 const style = {
   position: "absolute",
@@ -37,7 +38,6 @@ function page() {
   console.log(approveQuizData, "approveQuizData");
   const handleProcessRowUpdate = (params, index, field, color) => {
     // Update the row data with new color
-    console.log(params, "params::");
     setRowData((prevRows) =>
       prevRows.map((row) => {
         if (row.id === params.id) {
@@ -253,7 +253,7 @@ function page() {
             {hasChanged?.length > 0 && (
               <div
                 onClick={() => updateRow(params.row)}
-                className="tooltip"
+                className="tooltip cursor-pointer"
                 data-tip="Save"
               >
                 <IoSave className="w-5 h-5 text-activePrimaryBgColor" />
@@ -274,9 +274,11 @@ function page() {
 
   const updateRow = async (item) => {
     const { data } = await PUT(`/quiz/updateQuizRow/${item._id}`, item);
-    if (data.status) {
-      const hasChanged = updateRowValue.filter((row) => row.id !== data.id);
+    if (data.success) {
+      const hasChanged = updateRowValue.filter((row) => row.id !== data.data._id);
+      console.log(hasChanged,data)
       setupdateRowValue(hasChanged);
+      toast.success("Quiz Updated Successfully!")
     }
   };
 
@@ -286,7 +288,7 @@ function page() {
     const dataRes = { roomId: approveQuizData.room.id, endTime: endTime };
     const { data } = await PUT(`/quiz/${approveQuizData.id}`, dataRes);
     console.log("data.data", data.data);
-    if (data.status) {
+    if (data.success) {
       setapproveQuizData(false);
     }
   };
@@ -325,7 +327,7 @@ function page() {
     <div className="h-full">
       {approveQuizData && (
         <Modal
-          open={true}
+          open={approveQuizData}
           // onClose={() => setapproveQuizData(false)}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"

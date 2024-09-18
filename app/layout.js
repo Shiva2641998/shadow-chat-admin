@@ -2,6 +2,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import React from "react";
 import Wrapperlayout from "./Wrapperlayout";
+import { Bounce, ToastContainer } from "react-toastify";
 // import { useState } from "react";
 
 const geistSans = localFont({
@@ -26,6 +27,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-black`}
       >
+        
         <Wrapperlayout>{children}</Wrapperlayout>
       </body>
     </html>

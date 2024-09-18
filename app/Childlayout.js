@@ -6,6 +6,8 @@ import cellPhone from "./cell.webp";
 import Sidebar from "../components/AppBar/Sidebar";
 import PreviewComponent from "..//components/Preview/PreviewComponent";
 import { useAppSelector } from "../store/store";
+import { Bounce, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function Childlayout({ children }) {
   const [sidebarShow, setsidebarShow] = useState(true);
@@ -16,6 +18,18 @@ function Childlayout({ children }) {
   };
   return (
     <div className="flex h-screen bg-slate-100">
+      <ToastContainer position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          transition={Bounce}
+        />
       {/* <div
         // className={`transition-all w-0 p-0`}
       > */}

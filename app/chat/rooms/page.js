@@ -12,6 +12,7 @@ import { setPreviewDataInfo } from "../../../store/themeSlice";
 import { useAppDispatch } from "../../../store/store";
 import { DataGrid } from "@mui/x-data-grid";
 import { IoSave } from "react-icons/io5";
+import { toast } from "react-toastify";
 
 function page() {
   const { GET, PUT } = useRequestApiAction();
@@ -142,7 +143,7 @@ function page() {
             {hasChanged?.length > 0 && (
               <div
                 onClick={() => updateRow(params.row)}
-                className="tooltip"
+                className="tooltip cursor-pointer"
                 data-tip="Save"
               >
                 <IoSave className="w-5 h-5 text-activePrimaryBgColor" />
@@ -164,9 +165,12 @@ function page() {
     console.log("item", newObj);
     // delete item['messages']
     const { data } = await PUT(`/rooms/updateRow/${item._id}`, newObj);
-    if (data.status) {
-      const hasChanged = updateRowValue.filter((row) => row.id !== data.id);
+    if (data.success) {
+      const hasChanged = updateRowValue.filter((row) => row.id !== data.data._id);
+      console.log(hasChanged,data)
       setupdateRowValue(hasChanged);
+      toast.success("Room Updated Successfully!")
+
     }
     // setRowData(
     //   data.data.map((item) => ({
