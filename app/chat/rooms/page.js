@@ -13,6 +13,7 @@ import { useAppDispatch } from "../../../store/store";
 import { DataGrid } from "@mui/x-data-grid";
 import { IoSave } from "react-icons/io5";
 import { toast } from "react-toastify";
+import { MdDelete } from "react-icons/md";
 
 function page() {
   const { GET, PUT } = useRequestApiAction();
@@ -143,12 +144,19 @@ function page() {
             {hasChanged?.length > 0 && (
               <div
                 onClick={() => updateRow(params.row)}
-                className="tooltip cursor-pointer"
+                className="tooltip cursor-pointer "
                 data-tip="Save"
               >
                 <IoSave className="w-5 h-5 text-activePrimaryBgColor" />
               </div>
             )}
+            <div
+                //   onClick={() => updateRow(params.row)}
+                  className="tooltip cursor-pointer hover:bg-localColor ml-2"
+                  data-tip="Delete"
+                >
+              <MdDelete className="w-5 h-5 text-red-400" />
+              </div>
           </div>
         );
       },

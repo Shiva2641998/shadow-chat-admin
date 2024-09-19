@@ -16,6 +16,7 @@ import { FaCodePullRequest } from "react-icons/fa6";
 import Modal from "@mui/material/Modal";
 import { Box, Typography } from "@mui/material";
 import { toast } from "react-toastify";
+import { MdDelete } from "react-icons/md";
 
 const style = {
   position: "absolute",
@@ -35,6 +36,8 @@ function page() {
   const [rowData, setRowData] = useState([]);
   const [updateRowValue, setupdateRowValue] = useState([]);
   const [approveQuizData, setapproveQuizData] = useState(false);
+  const [height, setHeight] = useState(400);
+
   console.log(approveQuizData, "approveQuizData");
   const handleProcessRowUpdate = (params, index, field, color) => {
     // Update the row data with new color
@@ -264,8 +267,15 @@ function page() {
               className="tooltip"
               data-tip="Approve"
             >
-              <FaCodePullRequest className="w-5 h-5 mx-2 text-secondaryBgColor" />
+              <FaCodePullRequest className="w-5 h-5 mx-4 text-secondaryBgColor" />
             </div>
+            <div
+                //   onClick={() => updateRow(params.row)}
+                  className="tooltip cursor-pointer hover:bg-localColor"
+                  data-tip="Delete"
+                >
+              <MdDelete className="w-5 h-5 text-red-400" />
+              </div>
           </div>
         );
       },
@@ -323,6 +333,26 @@ function page() {
     getRoomList();
   }, []);
 
+  const adjustHeight = () => {
+    const gridElement = document.getElementById('data-grid');
+    if (gridElement) {
+      const rowCount = rowData.length;
+      const rowHeight = 52; // Default row height
+      const padding = 20; // Additional padding for header and footer
+
+      setHeight(rowCount * rowHeight + padding);
+    }
+  };
+
+  React.useEffect(() => {
+    adjustHeight();
+    window.addEventListener('resize', adjustHeight); // Adjust on window resize
+
+    return () => {
+      window.removeEventListener('resize', adjustHeight);
+    };
+  }, [rowData]);
+
   return (
     <div className="h-full">
       {approveQuizData && (
@@ -363,30 +393,25 @@ function page() {
       <Title title="Quiz" themeView={true} />
       <hr className="my-2 mb-5 text-primaryBgColor" />
       <div
-        className="data-grid-container"
+        className="data-grid"
         // className={"ag-theme-quartz"}
         // style={{ width: "100%", height: "100%" }}
+        style={{ height: 'inherit', width: '100%' }}
       >
         <DataGrid
-          className="dataGridTable overflow-scroll"
+          // className="dataGridTable overflow-scroll"
           rows={rowData}
           // rowHeight={200}
           columns={columns}
           disableColumnMenu
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 5,
-              },
-            },
-          }}
-          pageSizeOptions={[5]}
+          pageSize={5}
+          // pageSizeOptions={[5]}
           processRowUpdate={handleProcessRowUpdate}
-          componentsProps={{
-            virtualScroller: {
-              style: { overflow: "auto" }, // Customize scroller styles
-            },
-          }}
+          // componentsProps={{
+          //   virtualScroller: {
+          //     style: { overflow: "auto" }, // Customize scroller styles
+          //   },
+          // }}
           sx={{
             "& .MuiDataGrid-row": {
               minHeight: "200px !important", // Apply a minimum height to each cell

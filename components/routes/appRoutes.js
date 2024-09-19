@@ -1,5 +1,7 @@
 import { IoChatbubblesOutline } from "react-icons/io5";
 import { VscSymbolColor } from "react-icons/vsc";
+import { PiUsersThreeDuotone } from "react-icons/pi";
+import { RiHashtag } from "react-icons/ri";
 
 
 const appRoutes = [
@@ -20,6 +22,21 @@ const appRoutes = [
         displayText: "Quiz",
       },
     ],
+  },
+
+  {
+    path: "/users",
+    sidebarProps: {
+      displayText: "Users",
+      Icon: PiUsersThreeDuotone,
+    }
+  },
+  {
+    path: "/hashtaglist",
+    sidebarProps: {
+      displayText: "Hashtag list",
+      Icon: RiHashtag,
+    }
   },
   // {
   //   path: "/theme/",

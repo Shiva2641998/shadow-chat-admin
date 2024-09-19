@@ -39,7 +39,7 @@ body {
 }
 
 .data-grid-container {
-  height: 600px; /* Set height to control grid's visible area */
+  max-height: 100%;  
   width: 100%;
   overflow: auto; /* Manage scrolling behavior */
 }

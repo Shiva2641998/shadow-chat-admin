@@ -224,8 +224,8 @@ export default function Routes() {
           <List>
             {appRoutes.map((route, i) => {
               const { path } = route;
-              const { Icon, displayText } = route.sidebarProps;
-              return (
+              const { Icon, displayText } = route?.sidebarProps;
+              return route?.child ? (
                 <Accordion
                   open={open === i}
                   icon={
@@ -237,7 +237,14 @@ export default function Routes() {
                     />
                   }
                 >
-                  <ListItem selected={open === i} className={`p-0 mb-2 h-12 ${pathName.includes(path) ? "bg-activePrimaryBgColor text-localColor font-bold" : ""}`}>
+                  <ListItem
+                    selected={open === i}
+                    className={`p-0 mb-2 h-12 ${
+                      pathName.includes(path)
+                        ? "bg-activePrimaryBgColor text-localColor font-bold"
+                        : ""
+                    }`}
+                  >
                     <AccordionHeader
                       onClick={() => handleOpen(i)}
                       className="border-b-0 p-3"
@@ -259,18 +266,46 @@ export default function Routes() {
                         const { displayText, path } = e;
                         return (
                           <div className="h-10 px-2">
-                          <ListItem onClick={() => navigatePage(path)} className={`h-10 ${path == pathName ? "bg-localColor text-activePrimaryBgColor font-bold" : ""}`}>
-                            <ListItemPrefix>
-                              <MdBrightness1 className="h-2 w-5" />
-                            </ListItemPrefix>
-                            {displayText}
-                          </ListItem>
+                            <ListItem
+                              onClick={() => navigatePage(path)}
+                              className={`h-10 ${
+                                path == pathName
+                                  ? "bg-localColor text-activePrimaryBgColor font-bold"
+                                  : ""
+                              }`}
+                            >
+                              <ListItemPrefix>
+                                <MdBrightness1 className="h-2 w-5" />
+                              </ListItemPrefix>
+                              {displayText}
+                            </ListItem>
                           </div>
                         );
                       })}
                     </List>
                   </AccordionBody>
                 </Accordion>
+              ) : (
+                <ListItem
+                  key={i}
+                  // selected={open === i}
+                  className={`px-3 mb-2 h-12 ${
+                    pathName.includes(path)
+                      ? "bg-activePrimaryBgColor text-localColor font-bold"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    handleOpen(-1)
+                    navigatePage(path)
+                  }} // Handle click directly on the ListItem
+                >
+                  <div className="flex items-center">
+                    <Icon className="h-7 w-7 mr-3" />
+                    <Typography color="blue-gray" className="font-normal">
+                      {displayText}
+                    </Typography>
+                  </div>
+                </ListItem>
               );
             })}
 
@@ -307,13 +342,13 @@ export default function Routes() {
                 <IoSettingsOutline className="h-7 w-10 pr-2" />
               </ListItemPrefix>
               Settings
-            </ListItem> 
+            </ListItem>
             <ListItem>
               <ListItemPrefix>
                 <IoMdLogOut className="h-7 w-10 pr-2" />
               </ListItemPrefix>
               Log Out
-            </ListItem> 
+            </ListItem>
           </List>
           <Alert
             open={true}
