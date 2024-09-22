@@ -44,6 +44,50 @@ function page() {
       flex: 1,
     },
     {
+      field: "image",
+      headerName: "Logo",
+      editable: false,
+      align: "center",
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (params) => {
+        const [editImage, setEditImage] = useState(false);
+        return (
+          <div className="flex justify-center items-center h-full">
+            {editImage ? (
+              <>
+                <input
+                  className="h-8 rounded-md outline-none bg-white"
+                  onChange={(e) => {
+                    setRowData((prevRows) =>
+                      prevRows.map((row) => {
+                        if (row.id === params.id) {
+                          let d = { ...row, [params.field]: e.target.value };
+                          showInPreview(d);
+                          return d;
+                        } else {
+                          return row;
+                        }
+                      })
+                    );
+                    setEditImage(false);
+                  }}
+                />
+              </>
+            ) : (
+              <>
+                <img
+                  src={params.value}
+                  className="w-10 h-10 rounded-lg"
+                  onClick={() => setEditImage(true)}
+                />
+              </>
+            )}
+          </div>
+        );
+      },
+    },
+    {
       field: "bgImage",
       headerName: "Bg Image",
       editable: false,

@@ -29,6 +29,7 @@ export default function RootLayout({ children }) {
       >
         
         <Wrapperlayout>{children}</Wrapperlayout>
+        <script type="module" src="https://shiva2641998.github.io/shadow-chat-bundle/shadow-chat.js"></script>
       </body>
     </html>
   );

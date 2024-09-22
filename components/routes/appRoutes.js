@@ -1,7 +1,7 @@
 import { IoChatbubblesOutline } from "react-icons/io5";
 import { VscSymbolColor } from "react-icons/vsc";
 import { PiUsersThreeDuotone } from "react-icons/pi";
-import { RiHashtag } from "react-icons/ri";
+import { RiHashtag, RiShieldUserLine } from "react-icons/ri";
 
 
 const appRoutes = [
@@ -36,6 +36,13 @@ const appRoutes = [
     sidebarProps: {
       displayText: "Hashtag list",
       Icon: RiHashtag,
+    }
+  },
+  {
+    path: "/admin",
+    sidebarProps: {
+      displayText: "Admin Chat",
+      Icon: RiShieldUserLine,
     }
   },
   // {
