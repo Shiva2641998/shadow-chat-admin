@@ -269,7 +269,9 @@ function page() {
 
   const updateRow = async (item) => {
     const { data } = await PUT(`/advertisements/${item._id}`, {
-      selectedSlots: item.selectedSlots,
+      selectedSlots: item.selectedSlots.map((e) => {
+        return {id: e.id, name: e.name}
+      }),
     });
     if (data.success) {
       const hasChanged = updateRowValue.filter(
