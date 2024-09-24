@@ -270,7 +270,7 @@ function page() {
   const updateRow = async (item) => {
     const { data } = await PUT(`/advertisements/${item._id}`, {
       selectedSlots: item.selectedSlots.map((e) => {
-        return {id: e.id, name: e.name}
+        return {_id: e._id, name: e.name}
       }),
     });
     if (data.success) {
