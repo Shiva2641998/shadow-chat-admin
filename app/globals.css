@@ -44,6 +44,26 @@ body {
   overflow: auto; /* Manage scrolling behavior */
 }
 
+.multiSelect > div{
+  width: 100%;
+  height: 100%;
+}
+
+#search_input{
+  width: 100%;
+  height: 100%;
+  padding: 0px 10px;
+}
+
+.multiSelect .searchWrapper{
+  padding: 0 !important;
+  border: none !important;
+}
+
+.searchWrapper{
+  height: 100%;
+}
+
 /* .css-1y99dq9-MuiDataGrid-root .MuiDataGrid-cell {
   overflow: visible !important;
 }

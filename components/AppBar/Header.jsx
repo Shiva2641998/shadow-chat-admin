@@ -6,8 +6,9 @@ import { setAccessTokenInfo, setSidebar } from "../../store/themeSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { FaBell } from "react-icons/fa6";
 import Sidebar from "./Sidebar";
+import { IoLogoWechat } from "react-icons/io5";
 
-function Header({ sidebarClick, open }) {
+function Header({ sidebarClick, open, setshowChat, showChat }) {
   const dispatch = useDispatch();
   const accessToken = useSelector((state) => state.theme.access_tokken);
   // const navigate = use
@@ -37,30 +38,33 @@ function Header({ sidebarClick, open }) {
     <div className="navbar bg-primaryBgColor shadow-lg text-secondaryBgColor">
     {/* <Sidebar /> */}
       <div className="flex-1">
-        <div onClick={handleSidebarClick} className="cursor-pointer">
+        <div onClick={handleSidebarClick} className="cursor-pointer bg-localColor p-1.5 mx-3 rounded-lg">
           {/* {open ? (
             <IoMdClose className="text-secondaryBgColor mx-3 text-3xl" />
           ) : ( */}
-            <RiMenu2Fill className="text-secondaryBgColor mx-3 text-3xl" />
+            <RiMenu2Fill className=" text-2xl" />
           {/* )} */}
         </div>
-        {!open && (
-          <a className="text-secondaryBgColor text-xl font-bold">Magic Chat</a>
-        )}
+        {/* {!open && ( */}
+          <span className="text-activePrimaryBgColor ml-2 text-xl font-bold">Magic Chat</span>
+        {/* )} */}
       </div>
       <div className="flex-none gap-2">
         <div className="form-control">
           <input
             type="text"
             placeholder="Search"
-            className="input input-bordered w-24 md:w-auto bg-activePrimaryBgColor text-primaryBgColor"
+            className="input input-bordered w-24 md:w-auto !bg-localColor "
           />
         </div>
         <div className="bg-localColor p-2 rounded-lg text-activePrimaryBgColor mx-3 relative cursor-pointer">
-          <div className="badge bg-activePrimaryBgColor text-localColor badge-xs absolute -top-2 -right-2 w-5 h-5">
+          <div className="badge !bg-activePrimaryBgColor !text-localColor badge-xs absolute -top-2 -right-2 w-5 h-5">
             5
           </div>
           <FaBell className="w-5 h-5" />
+        </div>
+        <div onClick={() => setshowChat((prev) => !prev)} className={` p-2 rounded-lg ${!showChat  ? 'text-activePrimaryBgColor bg-localColor' : 'text-localColor bg-activePrimaryBgColor'} mx-3 relative cursor-pointer`}>
+          <IoLogoWechat className="w-5 h-5" />
         </div>
         <div className="dropdown dropdown-end">
           <div

@@ -1,22 +1,15 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
-import { AgGridReact } from "ag-grid-react"; // React Data Grid Component
-import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the Data Grid
-import "ag-grid-community/styles/ag-theme-quartz.css";
-// import 'ag-grid-community/styles/ag-theme-alpine.css';
-import Title from ".././../../components/Title/Title";
-import ColorPickerRenderer from ".././../../components/color/ColorPickerRenderer";
-import { useRequestApiAction } from "../../../axios/requests/useRequestApiAction";
-import { useDispatch } from "react-redux";
-import { setPreviewDataInfo } from "../../../store/themeSlice";
-import { useAppDispatch } from "../../../store/store";
+import React, { useEffect, useState } from "react";
+import Title from "../../../components/Title/Title";
 import { DataGrid } from "@mui/x-data-grid";
-import { IoSave } from "react-icons/io5";
-import { toast } from "react-toastify";
 import { MdDelete } from "react-icons/md";
+import { IoSave } from "react-icons/io5";
+import Multiselect from "multiselect-react-dropdown";
+import { useRequestApiAction } from "../../../axios/requests/useRequestApiAction";
 import { IoMdAdd } from "react-icons/io";
 import { Box } from "@mui/material";
 import Modal from "@mui/material/Modal";
+import { toast } from "react-toastify";
 
 const style = {
   position: "absolute",
@@ -32,29 +25,44 @@ const style = {
 
 function page() {
   const { GET, PUT, POST } = useRequestApiAction();
-
   const [rowData, setRowData] = useState([]);
+  const [slotList, setslotList] = useState([]);
   const [updateRowValue, setupdateRowValue] = useState([]);
   const [addRow, setaddRow] = useState(false);
-  const [addRawData, setaddRawData] = useState({
-    name: "",
-    description: "",
-  });
+  const [addAdvertiesmentData, setaddAdvertiesmentData] = useState({
+    name:"",
+    description:"",
+    imageUrl:"",
+    endTime:"",
+    selectedSlots:[]
+  })
 
-  const handleProcessRowUpdate = (params, color) => {
-    // Update the row data with new color
-    setRowData((prevRows) =>
-      prevRows.map((row) => {
-        if (row.id === params.id) {
-          let d = { ...row, [params.field]: color };
-          showInPreview(d);
-          return d;
-        } else {
-          return row;
-        }
-      })
+  const getSlot = async () => {
+    const { data } = await GET("/slot");
+    setslotList(
+      data.data.map((item) => ({
+        id: item._id, // Map _id to id
+        ...item,
+      }))
     );
   };
+
+  const getAdvList = async () => {
+    const { data } = await GET("/advertisements");
+    setRowData(
+      data.data.map((item) => ({
+        id: item._id, // Map _id to id
+        ...item,
+      }))
+    );
+  };
+
+  console.log(rowData, "rowData adv", slotList);
+
+  useEffect(() => {
+    getSlot();
+    getAdvList();
+  }, []);
 
   const columns = [
     { field: "name", headerName: "Name", flex: 1 },
@@ -67,8 +75,8 @@ function page() {
       }
     },
     {
-      field: "image",
-      headerName: "Logo",
+      field: "imageUrl",
+      headerName: "Image",
       editable: false,
       align: "center",
       headerAlign: "center",
@@ -111,85 +119,114 @@ function page() {
       },
     },
     {
-      field: "bgImage",
-      headerName: "Bg Image",
+      field: "selectedSlots",
+      headerName: "Slot",
       editable: false,
       align: "center",
       headerAlign: "center",
       flex: 1,
       renderCell: (params) => {
-        const [editImage, setEditImage] = useState(false);
+        const list = params.value.filter((e) => slotList.filter((item) => item?._id == e._id))
         return (
-          <div className="flex justify-center items-center h-full">
-            {editImage ? (
-              <>
-                <input
-                  className="h-8 rounded-md outline-none bg-white"
-                  onChange={(e) => {
-                    setRowData((prevRows) =>
-                      prevRows.map((row) => {
-                        if (row.id === params.id) {
-                          let d = { ...row, [params.field]: e.target.value };
-                          showInPreview(d);
-                          return d;
-                        } else {
-                          return row;
-                        }
-                      })
-                    );
-                    setEditImage(false);
-                  }}
-                />
-              </>
-            ) : (
-              <>
-                <img
-                  src={params.value}
-                  className="w-10 h-10 rounded-lg"
-                  onClick={() => setEditImage(true)}
-                />
-              </>
-            )}
+          <div className="flex justify-center items-center h-full w-full multiSelect">
+            <Multiselect
+              options={slotList} 
+              selectedValues={list}
+              displayValue="name" // Property name to display in the dropdown options
+              onSelect={(e) => {
+                setRowData((prevRows) =>
+                  prevRows.map((row) => {
+                    if (row.id === params.id) {
+                      let d = { ...row, [params.field]: e };
+                      showInPreview(d);
+                      return d;
+                    } else {
+                      return row;
+                    }
+                  })
+                );
+              }}
+            />
           </div>
         );
       },
     },
     {
-      field: "primaryBgColor",
-      headerName: "Primary Bg Color",
+      field: "endTime",
+      headerName: "End Time",
       editable: false,
       align: "center",
       headerAlign: "center",
       flex: 1,
       renderCell: (params) => {
+        console.log(params);
+        const formatDateTimeLocal = (date) => {
+          if (!date) return ""; // Handle null or undefined values
+          const d = new Date(date);
+          return d.toISOString().slice(0, 16); // Get 'YYYY-MM-DDTHH:MM' format
+        };
         return (
-          <ColorPickerRenderer
-          className="h-full"
-            params={params}
-            setRowData={setRowData}
-            handleProcessRowUpdate={handleProcessRowUpdate}
-          />
+          <div className="flex justify-center items-center h-full w-full multiSelect">
+            <input
+              className="outline-none bg-transparent rounded-lg  px-2"
+              type="datetime-local"
+              id="meeting-time"
+              name="meeting-time"
+              onChange={(e) => {
+                setRowData((prevRows) =>
+                  prevRows.map((row) => {
+                    if (row.id === params.id) {
+                      let d = { ...row, [params.field]: e.target.value };
+                      showInPreview(d);
+                      return d;
+                    } else {
+                      return row;
+                    }
+                  })
+                );
+              }}
+              defaultValue={formatDateTimeLocal(params.row.endTime)}
+            />
+          </div>
         );
       },
     },
-    {
-      field: "primaryTextColor",
-      headerName: "Primary Text Color",
-      editable: false,
-      align: "center",
-      headerAlign: "center",
-      flex: 1,
-      renderCell: (params) => {
-        return (
-          <ColorPickerRenderer
-            className="h-full"
-            params={params}
-            setRowData={setRowData}
-            handleProcessRowUpdate={handleProcessRowUpdate}
-          />
-        );
-      },
-    },
+    // {
+    //   field: "primaryBgColor",
+    //   headerName: "Primary Bg Color",
+    //   editable: false,
+    //   align: "center",
+    //   headerAlign: "center",
+    //   flex: 1,
+    //   renderCell: (params) => {
+    //     return (
+    //       <ColorPickerRenderer
+    //       className="h-full"
+    //         params={params}
+    //         setRowData={setRowData}
+    //         handleProcessRowUpdate={handleProcessRowUpdate}
+    //       />
+    //     );
+    //   },
+    // },
+    // {
+    //   field: "primaryTextColor",
+    //   headerName: "Primary Text Color",
+    //   editable: false,
+    //   align: "center",
+    //   headerAlign: "center",
+    //   flex: 1,
+    //   renderCell: (params) => {
+    //     return (
+    //       <ColorPickerRenderer
+    //         className="h-full"
+    //         params={params}
+    //         setRowData={setRowData}
+    //         handleProcessRowUpdate={handleProcessRowUpdate}
+    //       />
+    //     );
+    //   },
+    // },
 
     {
       field: "actions",
@@ -218,92 +255,58 @@ function page() {
               </div>
             )}
             <div
-                //   onClick={() => updateRow(params.row)}
-                  className="tooltip cursor-pointer hover:bg-localColor ml-2"
-                  data-tip="Delete"
-                >
+              //   onClick={() => updateRow(params.row)}
+              className="tooltip cursor-pointer hover:bg-localColor ml-2"
+              data-tip="Delete"
+            >
               <MdDelete className="w-5 h-5 text-red-400" />
-              </div>
+            </div>
           </div>
         );
       },
     },
   ];
 
-  const removeKey = (obj, keyToRemove) =>
-    Object.fromEntries(
-      Object.entries(obj).filter(([key]) => key !== keyToRemove)
-    );
-
   const updateRow = async (item) => {
-    const newObj = removeKey(item, "messages");
-    console.log("item", newObj);
-    // delete item['messages']
-    const { data } = await PUT(`/rooms/updateRow/${item._id}`, newObj);
+    const { data } = await PUT(`/advertisements/${item._id}`, {
+      selectedSlots: item.selectedSlots,
+    });
     if (data.success) {
-      const hasChanged = updateRowValue.filter((row) => row.id !== data.data._id);
-      console.log(hasChanged,data)
+      const hasChanged = updateRowValue.filter(
+        (row) => row.id !== data.data._id
+      );
+      console.log(hasChanged, data);
       setupdateRowValue(hasChanged);
-      toast.success("Room Updated Successfully!")
-
-    }
-    // setRowData(
-    //   data.data.map((item) => ({
-    //     id: item._id, // Map _id to id
-    //     ...item,
-    //   }))
-    // );
-  };
-
-  const addRoomRow = async () => {
-    const { data } = await POST(`/rooms/rooms`, addRawData);
-    if (data.success) {
-      setaddRow(false);
-      setaddRawData({});
-      getRoomList()
-      toast.success("Room Added Successfully!");
+      toast.success("Advertiesment Updated Successfully!");
     }
   };
-
-  const getRoomList = async () => {
-    const { data } = await GET("/rooms");
-    setRowData(
-      data.data.map((item) => ({
-        id: item._id, // Map _id to id
-        ...item,
-      }))
-    );
-  };
-
-  const dispatch = useAppDispatch();
 
   const showInPreview = (data) => {
     if (data) {
       console.log(data, "data");
       setupdateRowValue((prev) => [...prev, data]);
-      dispatch(
-        setPreviewDataInfo({
-          type: "/chat/rooms",
-          data,
-        })
-      );
     }
   };
 
-  useEffect(() => {
-    getRoomList();
-  }, []);
+  const handleAddRow = (e) =>{
+    setaddAdvertiesmentData((prev) => {
+      return {...prev,[e.target.name]: e.target.value}
+    })
+  }
 
-  const handleAddRow = (e) => {
-    setaddRawData((prev) => {
-      return { ...prev, [e.target.name]: e.target.value };
-    });
+  const addAdvertiesmentRow = async () => {
+    const { data } = await POST(`/advertisements`, addAdvertiesmentData);
+    if (data.success) {
+      setaddRow(false)
+      setaddAdvertiesmentData({})
+      getAdvList()
+      toast.success("Advertiesment Added Successfully!");
+    }
   };
 
   return (
-    <div className="h-full ">
-
-<Modal
+    <div>
+      <Modal
         open={addRow}
         // onClose={() => setapproveQuizData(false)}
         aria-labelledby="modal-modal-title"
@@ -329,6 +332,37 @@ function page() {
                 name="description"
                 onChange={handleAddRow}
               />
+
+              <input
+                className="outline-none border-2 col-span-2 rounded-lg bg-localColor border-slate-300 px-3 py-3"
+                type="text"
+                placeholder="Image url"
+                name="imageUrl"
+                onChange={handleAddRow}
+              />
+
+              <div className="border-2 bg-localColor border-gray-300 rounded-lg h-full multiSelect">
+              <Multiselect
+              options={slotList}
+              className="h-full"
+              displayValue="name" // Property name to display in the dropdown options
+              onSelect={(e) => {
+                setaddAdvertiesmentData((prevRows) =>{
+                  return { ...prevRows, selectedSlots: e };
+                })
+              }}
+            />
+            </div>
+
+              <input
+                className="outline-none border-2 rounded-lg bg-localColor border-slate-300 px-3 py-3"
+                type="datetime-local"
+                id="meeting-time"
+                placeholder="end Time"
+                name="endTime"
+                onChange={handleAddRow}
+              />
+
             </div>
 
             <div className="flex justify-end mt-4">
@@ -340,7 +374,7 @@ function page() {
               </button>
               <button
                 className="w-fit px-4 rounded-lg py-3 bg-activePrimaryBgColor text-localColor"
-                onClick={addRoomRow}
+                onClick={addAdvertiesmentRow}
               >
                 Submit
               </button>
@@ -348,8 +382,7 @@ function page() {
           </div>
         </Box>
       </Modal>
-
-      <Title title="Room" themeView={true} />
+      <Title title="Advertiesment" />
       <hr className="my-2 mb-5 text-primaryBgColor" />
       <div className="flex justify-end pb-5">
         <button
@@ -360,10 +393,7 @@ function page() {
           Add
         </button>
       </div>
-      <div
-      // className={"ag-theme-quartz"}
-      // style={{ width: "100%", height: "100%" }}
-      >
+      <div>
         <DataGrid
           className="dataGridTable"
           rows={rowData}

@@ -4,12 +4,12 @@ import { AgGridReact } from "ag-grid-react"; // React Data Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the Data Grid
 import "ag-grid-community/styles/ag-theme-quartz.css";
 // import 'ag-grid-community/styles/ag-theme-alpine.css';
-import Title from ".././../../components/Title/Title";
-import ColorPickerRenderer from ".././../../components/color/ColorPickerRenderer";
-import { useRequestApiAction } from "../../../axios/requests/useRequestApiAction";
+import Title from ".././../components/Title/Title";
+import ColorPickerRenderer from ".././../components/color/ColorPickerRenderer";
+import { useRequestApiAction } from "../../axios/requests/useRequestApiAction";
 import { useDispatch } from "react-redux";
-import { setPreviewDataInfo } from "../../../store/themeSlice";
-import { useAppDispatch } from "../../../store/store";
+import { setPreviewDataInfo } from "../../store/themeSlice";
+import { useAppDispatch } from "../../store/store";
 import { DataGrid } from "@mui/x-data-grid";
 import { IoSave } from "react-icons/io5";
 import { toast } from "react-toastify";
@@ -57,18 +57,18 @@ function page() {
   };
 
   const columns = [
-    { field: "name", headerName: "Name", flex: 1 },
+    { field: "title", headerName: "Title", flex: 1 },
     {
       field: "description",
       headerName: "Description",
       flex: 1,
       renderCell: (params) => {
-        return <p className="overflow-hidden truncate">{params.value}</p>
-      }
+        return <p className="overflow-hidden truncate">{params.value}</p>;
+      },
     },
     {
-      field: "image",
-      headerName: "Logo",
+      field: "url",
+      headerName: "URL",
       editable: false,
       align: "center",
       headerAlign: "center",
@@ -111,85 +111,140 @@ function page() {
       },
     },
     {
-      field: "bgImage",
-      headerName: "Bg Image",
+      field: "status",
+      headerName: "Status",
+      align: "center",
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (params) => {
+        return params.value ? (
+          <div className="badge !badge-accent">Active</div>
+        ) : (
+          <div className="badge !badge-secondary">Over</div>
+        );
+      },
+    },
+    {
+      field: "endTime",
+      headerName: "End time",
       editable: false,
       align: "center",
       headerAlign: "center",
       flex: 1,
       renderCell: (params) => {
-        const [editImage, setEditImage] = useState(false);
+        console.log(params);
+        const formatDateTimeLocal = (date) => {
+          if (!date) return ""; // Handle null or undefined values
+          const d = new Date(date);
+          return d.toISOString().slice(0, 16); // Get 'YYYY-MM-DDTHH:MM' format
+        };
         return (
-          <div className="flex justify-center items-center h-full">
-            {editImage ? (
-              <>
-                <input
-                  className="h-8 rounded-md outline-none bg-white"
-                  onChange={(e) => {
-                    setRowData((prevRows) =>
-                      prevRows.map((row) => {
-                        if (row.id === params.id) {
-                          let d = { ...row, [params.field]: e.target.value };
-                          showInPreview(d);
-                          return d;
-                        } else {
-                          return row;
-                        }
-                      })
-                    );
-                    setEditImage(false);
-                  }}
-                />
-              </>
-            ) : (
-              <>
-                <img
-                  src={params.value}
-                  className="w-10 h-10 rounded-lg"
-                  onClick={() => setEditImage(true)}
-                />
-              </>
-            )}
+          <div className="flex justify-center items-center h-full w-full multiSelect">
+            <input
+              className="outline-none bg-transparent rounded-lg  px-2"
+              type="datetime-local"
+              id="meeting-time"
+              name="meeting-time"
+              onChange={(e) => {
+                setRowData((prevRows) =>
+                  prevRows.map((row) => {
+                    if (row.id === params.id) {
+                      let d = { ...row, [params.field]: e.target.value };
+                      showInPreview(d);
+                      return d;
+                    } else {
+                      return row;
+                    }
+                  })
+                );
+              }}
+              defaultValue={formatDateTimeLocal(params.row.endTime)}
+            />
           </div>
         );
       },
     },
-    {
-      field: "primaryBgColor",
-      headerName: "Primary Bg Color",
-      editable: false,
-      align: "center",
-      headerAlign: "center",
-      flex: 1,
-      renderCell: (params) => {
-        return (
-          <ColorPickerRenderer
-          className="h-full"
-            params={params}
-            setRowData={setRowData}
-            handleProcessRowUpdate={handleProcessRowUpdate}
-          />
-        );
-      },
-    },
-    {
-      field: "primaryTextColor",
-      headerName: "Primary Text Color",
-      editable: false,
-      align: "center",
-      headerAlign: "center",
-      flex: 1,
-      renderCell: (params) => {
-        return (
-          <ColorPickerRenderer
-            className="h-full"
-            params={params}
-            setRowData={setRowData}
-            handleProcessRowUpdate={handleProcessRowUpdate}
-          />
-        );
-      },
-    },
+
+    // {
+    //   field: "bgImage",
+    //   headerName: "Bg Image",
+    //   editable: false,
+    //   align: "center",
+    //   headerAlign: "center",
+    //   flex: 1,
+    //   renderCell: (params) => {
+    //     const [editImage, setEditImage] = useState(false);
+    //     return (
+    //       <div className="flex justify-center items-center h-full">
+    //         {editImage ? (
+    //           <>
+    //             <input
+    //               className="h-8 rounded-md outline-none bg-white"
+    //               onChange={(e) => {
+    //                 setRowData((prevRows) =>
+    //                   prevRows.map((row) => {
+    //                     if (row.id === params.id) {
+    //                       let d = { ...row, [params.field]: e.target.value };
+    //                       showInPreview(d);
+    //                       return d;
+    //                     } else {
+    //                       return row;
+    //                     }
+    //                   })
+    //                 );
+    //                 setEditImage(false);
+    //               }}
+    //             />
+    //           </>
+    //         ) : (
+    //           <>
+    //             <img
+    //               src={params.value}
+    //               className="w-10 h-10 rounded-lg"
+    //               onClick={() => setEditImage(true)}
+    //             />
+    //           </>
+    //         )}
+    //       </div>
+    //     );
+    //   },
+    // },
+    // {
+    //   field: "primaryBgColor",
+    //   headerName: "Primary Bg Color",
+    //   editable: false,
+    //   align: "center",
+    //   headerAlign: "center",
+    //   flex: 1,
+    //   renderCell: (params) => {
+    //     return (
+    //       <ColorPickerRenderer
+    //         className="h-full"
+    //         params={params}
+    //         setRowData={setRowData}
+    //         handleProcessRowUpdate={handleProcessRowUpdate}
+    //       />
+    //     );
+    //   },
+    // },
+    // {
+    //   field: "primaryTextColor",
+    //   headerName: "Primary Text Color",
+    //   editable: false,
+    //   align: "center",
+    //   headerAlign: "center",
+    //   flex: 1,
+    //   renderCell: (params) => {
+    //     return (
+    //       <ColorPickerRenderer
+    //         className="h-full"
+    //         params={params}
+    //         setRowData={setRowData}
+    //         handleProcessRowUpdate={handleProcessRowUpdate}
+    //       />
+    //     );
+    //   },
+    // },
 
     {
       field: "actions",
@@ -218,12 +273,12 @@ function page() {
               </div>
             )}
             <div
-                //   onClick={() => updateRow(params.row)}
-                  className="tooltip cursor-pointer hover:bg-localColor ml-2"
-                  data-tip="Delete"
-                >
+              //   onClick={() => updateRow(params.row)}
+              className="tooltip cursor-pointer hover:bg-localColor ml-2"
+              data-tip="Delete"
+            >
               <MdDelete className="w-5 h-5 text-red-400" />
-              </div>
+            </div>
           </div>
         );
       },
@@ -236,16 +291,15 @@ function page() {
     );
 
   const updateRow = async (item) => {
-    const newObj = removeKey(item, "messages");
-    console.log("item", newObj);
     // delete item['messages']
-    const { data } = await PUT(`/rooms/updateRow/${item._id}`, newObj);
+    const { data } = await PUT(`/event/${item._id}`, item);
     if (data.success) {
-      const hasChanged = updateRowValue.filter((row) => row.id !== data.data._id);
-      console.log(hasChanged,data)
+      const hasChanged = updateRowValue.filter(
+        (row) => row.id !== data.data._id
+      );
+      console.log(hasChanged, data);
       setupdateRowValue(hasChanged);
-      toast.success("Room Updated Successfully!")
-
+      toast.success("Event Updated Successfully!");
     }
     // setRowData(
     //   data.data.map((item) => ({
@@ -256,17 +310,17 @@ function page() {
   };
 
   const addRoomRow = async () => {
-    const { data } = await POST(`/rooms/rooms`, addRawData);
+    const { data } = await POST(`/event`, addRawData);
     if (data.success) {
       setaddRow(false);
       setaddRawData({});
-      getRoomList()
-      toast.success("Room Added Successfully!");
+      geteventList();
+      toast.success("event Added Successfully!");
     }
   };
 
-  const getRoomList = async () => {
-    const { data } = await GET("/rooms");
+  const geteventList = async () => {
+    const { data } = await GET("/event");
     setRowData(
       data.data.map((item) => ({
         id: item._id, // Map _id to id
@@ -291,7 +345,7 @@ function page() {
   };
 
   useEffect(() => {
-    getRoomList();
+    geteventList();
   }, []);
 
   const handleAddRow = (e) => {
@@ -302,8 +356,7 @@ function page() {
 
   return (
     <div className="h-full ">
-
-<Modal
+      <Modal
         open={addRow}
         // onClose={() => setapproveQuizData(false)}
         aria-labelledby="modal-modal-title"
@@ -317,8 +370,8 @@ function page() {
               <input
                 className="outline-none border-2 rounded-lg bg-localColor border-slate-300 px-3 py-3"
                 type="text"
-                placeholder="Enter Name"
-                name="name"
+                placeholder="Enter title"
+                name="title"
                 onChange={handleAddRow}
               />
 
@@ -327,6 +380,23 @@ function page() {
                 type="text"
                 placeholder="Enter Description"
                 name="description"
+                onChange={handleAddRow}
+              />
+
+              <input
+                className="outline-none border-2 rounded-lg bg-localColor border-slate-300 px-3 py-3"
+                type="text"
+                placeholder="Image url"
+                name="url"
+                onChange={handleAddRow}
+              />
+
+              <input
+                className="outline-none border-2 rounded-lg bg-localColor border-slate-300 px-3 py-3"
+                type="datetime-local"
+                id="meeting-time"
+                placeholder="end Time"
+                name="endTime"
                 onChange={handleAddRow}
               />
             </div>
@@ -349,7 +419,7 @@ function page() {
         </Box>
       </Modal>
 
-      <Title title="Room" themeView={true} />
+      <Title title="Fanzone" themeView={true} />
       <hr className="my-2 mb-5 text-primaryBgColor" />
       <div className="flex justify-end pb-5">
         <button

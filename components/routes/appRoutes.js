@@ -1,7 +1,8 @@
 import { IoChatbubblesOutline } from "react-icons/io5";
 import { VscSymbolColor } from "react-icons/vsc";
 import { PiUsersThreeDuotone } from "react-icons/pi";
-import { RiHashtag, RiShieldUserLine } from "react-icons/ri";
+import { RiAdvertisementFill, RiHashtag, RiShieldUserLine } from "react-icons/ri";
+import { MdOutlineEmojiEvents } from "react-icons/md";
 
 
 const appRoutes = [
@@ -39,11 +40,29 @@ const appRoutes = [
     }
   },
   {
-    path: "/admin",
+    path: "/fanzone",
     sidebarProps: {
-      displayText: "Admin Chat",
-      Icon: RiShieldUserLine,
+      displayText: "Fanzone",
+      Icon: MdOutlineEmojiEvents,
     }
+  },
+  {
+    path: "/Ads/",
+    sidebarProps: {
+      displayText: "Ads",
+      Icon: RiAdvertisementFill,
+    },
+    child: [
+      {
+        index: true,
+        path: "/ads/advertiesment",
+        displayText: "Advertiesment",
+      },
+      {
+        path: "/ads/slot",
+        displayText: "Slot",
+      },
+    ],
   },
   // {
   //   path: "/theme/",

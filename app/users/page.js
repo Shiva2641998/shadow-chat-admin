@@ -174,12 +174,6 @@ function page() {
         toast.success("User Updated Successfully!")
   
       }
-      // setRowData(
-      //   data.data.map((item) => ({
-      //     id: item._id, // Map _id to id
-      //     ...item,
-      //   }))
-      // );
     };
   
     const getUsersList = async () => {

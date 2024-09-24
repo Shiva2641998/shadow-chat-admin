@@ -1,9 +1,6 @@
 import localFont from "next/font/local";
 import "./globals.css";
-import React from "react";
 import Wrapperlayout from "./Wrapperlayout";
-import { Bounce, ToastContainer } from "react-toastify";
-// import { useState } from "react";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -22,14 +19,16 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-black`}
       >
-        
+        <div className="relative z-50">
+        {/* <saytv-chat bubble="true" width="30" height="100" authentication="true"></saytv-chat> */}
+        </div>
         <Wrapperlayout>{children}</Wrapperlayout>
-        <script type="module" src="https://shiva2641998.github.io/shadow-chat-bundle/shadow-chat.js"></script>
       </body>
     </html>
   );

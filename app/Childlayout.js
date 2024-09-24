@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 function Childlayout({ children }) {
   const [sidebarShow, setsidebarShow] = useState(true);
   const { preview } = useAppSelector((state) => state.theme);
+  const [showChat, setshowChat] = useState(false)
 
   const sidebarHandle = () => {
     setsidebarShow(!sidebarShow);
@@ -35,8 +36,10 @@ function Childlayout({ children }) {
       > */}
         {/* <Sidebar /> */}
       {/* </div> */}
-      <div className="w-full h-full">
-        <Header sidebarClick={sidebarHandle} open={sidebarShow} />
+      <div className="h-full transition-all" style={{
+        width: showChat ? '75%' : '100%'
+      }}>
+        <Header sidebarClick={sidebarHandle} open={sidebarShow} showChat={showChat} setshowChat={setshowChat} />
         <div className="flex px-5 h-[80%]">
           <Sidebar />
           <div className={`
@@ -48,7 +51,7 @@ function Childlayout({ children }) {
               {children}
               </div>
           <div
-            className={`flex justify-center items-center ${
+            className={`flex justify-center items-center z-0 ${
               preview ? "w-[20%]" : "w-0"
             }
              h-full overflow-hidden`}
@@ -63,6 +66,15 @@ function Childlayout({ children }) {
             </div>
           </div>
         </div>
+      </div>
+      <div className="" style={{
+        width: showChat ? "25%" : "",
+        margin: showChat ? "0px 10px" : ""
+      }}>
+        <saytv-chat bubble={showChat ? "false" : "true"} width={showChat ? "100" : "30"} height="100" authentication="true"></saytv-chat>
+      </div> 
+      <div>
+      {/* <saytv-chat bubble="true" width="30" height="100" authentication="true"></saytv-chat> */}
       </div>
     </div>
   );

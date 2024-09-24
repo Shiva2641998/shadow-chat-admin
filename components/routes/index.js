@@ -86,10 +86,10 @@ export default function Routes() {
               Magic Chat
             </Typography>
           </div>
-          <div className=" w-full bg-localColor my-5 rounded-md flex justify-between items-center">
+          <div className=" w-full bg-localColor my-5 overflow-hidden rounded-md flex justify-between items-center">
             <Input
               placeholder="Search"
-              className="focus:outline-none active:outline-none"
+              className="focus:outline-none active:outline-none outline-none"
             />
             <IoIosSearch className="h-5 w-5 mr-3" />
           </div>
@@ -99,6 +99,7 @@ export default function Routes() {
               const { Icon, displayText } = route?.sidebarProps;
               return route?.child ? (
                 <Accordion
+                key={i}
                   open={open === i}
                   icon={
                     <FaAngleDown
@@ -134,10 +135,10 @@ export default function Routes() {
                   </ListItem>
                   <AccordionBody className="py-1">
                     <List className="p-0">
-                      {route?.child.map((e) => {
+                      {route?.child.map((e,i) => {
                         const { displayText, path } = e;
                         return (
-                          <div className="h-10 px-2">
+                          <div key={i} className="h-10 px-2">
                             <ListItem
                               onClick={() => navigatePage(path)}
                               className={`h-10 ${
