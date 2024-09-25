@@ -32,7 +32,7 @@ function page() {
   const [addAdvertiesmentData, setaddAdvertiesmentData] = useState({
     name:"",
     description:"",
-    imageUrl:"",
+    url:"",
     endTime:"",
     selectedSlots:[]
   })
@@ -75,7 +75,7 @@ function page() {
       }
     },
     {
-      field: "imageUrl",
+      field: "url",
       headerName: "Image",
       editable: false,
       align: "center",
@@ -339,7 +339,7 @@ function page() {
                 className="outline-none border-2 col-span-2 rounded-lg bg-localColor border-slate-300 px-3 py-3"
                 type="text"
                 placeholder="Image url"
-                name="imageUrl"
+                name="url"
                 onChange={handleAddRow}
               />
 
@@ -350,7 +350,9 @@ function page() {
               displayValue="name" // Property name to display in the dropdown options
               onSelect={(e) => {
                 setaddAdvertiesmentData((prevRows) =>{
-                  return { ...prevRows, selectedSlots: e };
+                  return { ...prevRows, selectedSlots: e.map((e) => {
+                    return {_id: e._id, name: e.name}
+                  }) };
                 })
               }}
             />
