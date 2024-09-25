@@ -268,11 +268,7 @@ function page() {
   ];
 
   const updateRow = async (item) => {
-    const { data } = await PUT(`/advertisements/${item._id}`, {
-      selectedSlots: item.selectedSlots.map((e) => {
-        return {_id: e._id, name: e.name}
-      }),
-    });
+    const { data } = await PUT(`/advertisements/${item._id}`, item);
     if (data.success) {
       const hasChanged = updateRowValue.filter(
         (row) => row.id !== data.data._id
