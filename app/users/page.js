@@ -8,6 +8,7 @@ import ColorPickerRenderer from '../../components/color/ColorPickerRenderer';
 import { setPreviewDataInfo } from '../../store/themeSlice';
 import { IoSave } from 'react-icons/io5';
 import { MdDelete } from 'react-icons/md';
+import { toast } from 'react-toastify';
 
 function page() {
     const { GET, PUT } = useRequestApiAction();
@@ -38,6 +39,34 @@ function page() {
         field: "userName",
         headerName: "User Name",
         flex: 1,
+      },
+      {
+        field: "isAdmin",
+        headerName: "Role",
+        flex: 1,
+        renderCell: (params) => {
+         return <label className="swap">
+        <input type="checkbox" checked={params.value}
+        onClick={(e) => {
+          setRowData((prevRows) =>
+            prevRows.map((row) => {
+              if (row.id === params.id) {
+                let d = { ...row, [params.field]: !params.value };
+                showInPreview(d);
+                return d;
+              } else {
+                return row;
+              }
+            })
+          );
+        }}
+        
+        />
+        <div className="swap-on">Admin</div>
+        <div className="swap-off">User</div>
+      </label>
+          // return <p className="overflow-hidden truncate">{params.value}</p>;
+        },
       },
       {
         field: "image",
@@ -165,8 +194,8 @@ function page() {
   
     const updateRow = async (item) => {
       // delete item['messages']
-      const {userName, firstName, lastName, image, password} = item
-      const { data } = await PUT(`/users/${item._id}`, {userName, firstName, lastName, image, password});
+      // const {userName, firstName, lastName, image, password} = item
+      const { data } = await PUT(`/users/${item._id}`, item);
       if (data.success) {
         const hasChanged = updateRowValue.filter((row) => row.id !== data.data._id);
         console.log(hasChanged,data)

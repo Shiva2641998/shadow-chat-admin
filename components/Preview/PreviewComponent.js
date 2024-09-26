@@ -1,6 +1,8 @@
 import React, { memo, useEffect, useState } from "react";
 import ChatPage from "./ChatPage";
 import ChatQuiz from "./ChatQuiz";
+import ChatList from "./ChatList";
+import ChatFanzone from "./ChatFanzone";
 import { usePathname } from "next/navigation";
 import { useSelector } from "react-redux";
 
@@ -19,8 +21,10 @@ const { previewData } = useSelector((state) => state.theme);
       return <ChatPage path={type} />;
     case "/chat/quiz":
       return <ChatQuiz path={type} />;
+    case "/chat/fanzone":
+      return <ChatFanzone path={type} />;
     default:
-      return <ChatPage path={type} />;
+      return <ChatList path={type} />;
     //   return <saytv-chat bubble="false" authentication="true"></saytv-chat>;
   }
 }

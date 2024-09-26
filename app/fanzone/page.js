@@ -13,7 +13,7 @@ import { useAppDispatch } from "../../store/store";
 import { DataGrid } from "@mui/x-data-grid";
 import { IoSave } from "react-icons/io5";
 import { toast } from "react-toastify";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdOutlineOndemandVideo } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
 import { Box } from "@mui/material";
 import Modal from "@mui/material/Modal";
@@ -29,6 +29,8 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+
+const imagePattern = /^https?:\/\/.*\.(png|jpe?g)$/i;
 
 function page() {
   const { GET, PUT, POST } = useRequestApiAction();
@@ -99,11 +101,15 @@ function page() {
               </>
             ) : (
               <>
+              {
+                imagePattern?.test(params.value) ? 
                 <img
                   src={params.value}
                   className="w-10 h-10 rounded-lg"
                   onClick={() => setEditImage(true)}
-                />
+                /> : <MdOutlineOndemandVideo className="w-10 h-10 rounded-lg"
+                onClick={() => setEditImage(true)} />
+              }
               </>
             )}
           </div>
@@ -417,7 +423,7 @@ function page() {
       setupdateRowValue((prev) => [...prev, data]);
       dispatch(
         setPreviewDataInfo({
-          type: "/chat/rooms",
+          type: "/chat/fanzone",
           data,
         })
       );
