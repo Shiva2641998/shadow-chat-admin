@@ -137,7 +137,26 @@ function page() {
                 setRowData((prevRows) =>
                   prevRows.map((row) => {
                     if (row.id === params.id) {
-                      let d = { ...row, [params.field]: e };
+                      let item = e.map((x,i) => {
+                        return {_id: x._id, name: x.name}
+                      })
+                      let d = { ...row, [params.field]: item };
+                      showInPreview(d);
+                      return d;
+                    } else {
+                      return row;
+                    }
+                  })
+                );
+              }}
+              onRemove={(e) => {
+                setRowData((prevRows) =>
+                  prevRows.map((row) => {
+                    if (row.id === params.id) {
+                      let item = e.map((x,i) => {
+                        return {_id: x._id, name: x.name}
+                      })
+                      let d = { ...row, [params.field]: item };
                       showInPreview(d);
                       return d;
                     } else {

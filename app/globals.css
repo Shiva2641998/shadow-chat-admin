@@ -64,6 +64,10 @@ body {
   height: 100%;
 }
 
+.chip{
+  background-color: #5d60ef !important;
+}
+
 /* .css-1y99dq9-MuiDataGrid-root .MuiDataGrid-cell {
   overflow: visible !important;
 }
