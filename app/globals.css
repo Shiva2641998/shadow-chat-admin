@@ -68,6 +68,19 @@ body {
   background-color: #5d60ef !important;
 }
 
+.collapse-title{
+  height: 50px !important;
+  min-height: 50px !important;
+}
+
+.MuiDataGrid-columnHeaders > div{
+  @apply !bg-activePrimaryBgColor !text-localColor;
+}
+
+.collapse > input{
+  min-height: 1rem;
+}
+
 /* .css-1y99dq9-MuiDataGrid-root .MuiDataGrid-cell {
   overflow: visible !important;
 }

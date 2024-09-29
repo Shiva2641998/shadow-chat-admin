@@ -6,10 +6,32 @@ import Title from "../../components/Title/Title";
 function page() {
   return (
     <>
-    <Title title="Theme" themeView={true} />
+      <Title title="Theme" themeView={true} />
       <hr className="my-2 mb-5 text-primaryBgColor" />
-    <div className="mt-5 flex flex-col h-full">
-      <div className="flex-1">
+      <div className="mt-5 flex flex-col h-full">
+        <div className="collapse collapse-plus bg-activePrimaryBgColor text-localColor mb-2">
+          <input type="radio" name="my-accordion-3" defaultChecked />
+          <div className="collapse-title text-md font-medium">Home</div>
+          <div className="collapse-content bg-localColor text-black pt-2">
+            <Main />
+          </div>
+        </div>
+        <div className="collapse collapse-plus bg-activePrimaryBgColor text-localColor mb-2">
+          <input type="radio" name="my-accordion-3" />
+          <div className="collapse-title text-md font-medium">Chat Bubble</div>
+          <div className="collapse-content bg-localColor text-black pt-2">
+            <ChatBubble />
+          </div>
+        </div>
+        <div className="collapse collapse-plus bg-activePrimaryBgColor text-localColor mb-2">
+          <input type="radio" name="my-accordion-3" />
+          <div className="collapse-title text-md font-medium">Choice Theme</div>
+          <div className="collapse-content bg-localColor text-black pt-2">
+            <Themes />
+          </div>
+        </div>
+
+        {/* <div className="flex-1">
       <div role="tablist" className="tabs tabs-boxed bg-transparent">
         <input
           type="radio"
@@ -45,11 +67,13 @@ function page() {
           <Themes />
         </div>
       </div>
+      </div> */}
+        <div className="flex">
+          <button className="bg-activePrimaryBgColor text-localColor px-4 py-2 rounded-lg">
+            Save Changes
+          </button>
+        </div>
       </div>
-      <div className="flex">
-      <button className="bg-activePrimaryBgColor text-localColor px-4 py-2 rounded-lg">Save Changes</button>
-      </div>
-    </div>
     </>
   );
 }
@@ -57,18 +81,52 @@ function page() {
 export default page;
 
 const Themes = () => {
-  const theme = [{url:'https://store.enappd.com/wp-content/uploads/2019/01/8-399x800.png',price: 0},{url:'https://store.enappd.com/wp-content/uploads/2019/01/8-399x800.png',price: 0},{url:'https://store.enappd.com/wp-content/uploads/2019/01/8-399x800.png',price: 0},{url:'https://store.enappd.com/wp-content/uploads/2019/01/8-399x800.png',price: 20}]
-  const [selected, setselected] = useState(0)
+  const theme = [
+    {
+      url: "https://store.enappd.com/wp-content/uploads/2019/01/8-399x800.png",
+      price: 0,
+    },
+    {
+      url: "https://store.enappd.com/wp-content/uploads/2019/01/8-399x800.png",
+      price: 0,
+    },
+    {
+      url: "https://store.enappd.com/wp-content/uploads/2019/01/8-399x800.png",
+      price: 50,
+    },
+    {
+      url: "https://store.enappd.com/wp-content/uploads/2019/01/8-399x800.png",
+      price: 20,
+    },
+  ];
+  const [selected, setselected] = useState(0);
   return (
     <div className="grid grid-cols-6 gap-10">
-      {
-        theme.map((e,i) => <div className={`flex relative flex-col cursor-pointer justify-center items-center w-fit p-3 rounded-xl ${ i == selected ? "!shadow-md !shadow-activePrimaryBgColor" : ""}`}>
-        <img src={e.url} className="w-32 h-full" onClick={() => setselected(i)} />
-       <p className="pt-3 italic">{e.price > 0 ? "$ " + e.price : "--"}</p>
-       {e.price > 0 && <img src="https://static.vecteezy.com/system/resources/thumbnails/023/289/782/small_2x/a-stunning-and-intricately-designed-golden-crown-perfectly-crafted-with-a-realistic-touch-sits-majestically-on-a-clear-and-transparent-background-generative-ai-png.png" className="w-10 h-10 absolute top-0 right-3" />}
-      </div>)
-      }
-      
+      {theme.map((e, i) => (
+        <div
+          className={`flex relative flex-col cursor-pointer justify-center items-center w-fit p-3 rounded-xl `}
+        >
+          <img
+            src={'https://www.pngall.com/wp-content/uploads/8/Green-Check-Mark-PNG-Clipart.png'}
+            className={`w-8 mb-3 h-full ${
+              i == selected ? "" : "invisible"
+            }`}
+            onClick={() => setselected(i)}
+          />
+          <img
+            src={e.url}
+            className="w-32 h-full"
+            onClick={() => setselected(i)}
+          />
+          <p className="pt-3 italic">{e.price > 0 ? "$ " + e.price : "free"}</p>
+          {e.price > 0 && (
+            <img
+              src="https://static.vecteezy.com/system/resources/thumbnails/023/289/782/small_2x/a-stunning-and-intricately-designed-golden-crown-perfectly-crafted-with-a-realistic-touch-sits-majestically-on-a-clear-and-transparent-background-generative-ai-png.png"
+              className="w-10 h-10 absolute top-10 right-3"
+            />
+          )}
+        </div>
+      ))}
     </div>
   );
 };
@@ -115,17 +173,23 @@ const Main = () => {
   );
 };
 
-const ImagePick = ({onChange, value = "https://pngimg.com/d/nike_PNG12.png"}) => {
+const ImagePick = ({
+  onChange,
+  value = "https://pngimg.com/d/nike_PNG12.png",
+}) => {
   const [editImage, setEditImage] = useState(false);
   return (
     <div className="flex">
       {editImage ? (
         <>
-        <div className="fixed left-0 top-0 w-full h-full z-0" onClick={() => setEditImage(false)}></div>
+          <div
+            className="fixed left-0 top-0 w-full h-full z-0"
+            onClick={() => setEditImage(false)}
+          ></div>
           <input
             className="h-8 rounded-md outline-none bg-white z-10"
             onChange={(e) => {
-              onChange(e)
+              onChange(e);
               setEditImage(false);
             }}
           />
@@ -141,4 +205,4 @@ const ImagePick = ({onChange, value = "https://pngimg.com/d/nike_PNG12.png"}) =>
       )}
     </div>
   );
-}
+};

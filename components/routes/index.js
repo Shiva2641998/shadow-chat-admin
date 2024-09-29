@@ -70,7 +70,7 @@ export default function Routes() {
         <Card
           color="transparent"
           shadow={false}
-          className="h-[calc(100vh-2rem)] w-full p-4 bg-white"
+          className="w-full p-4 bg-activePrimaryBgColor h-full rounded-none text-localColor"
         >
           <div className="mb-2 flex items-center gap-4 p-4">
             <img
@@ -86,13 +86,13 @@ export default function Routes() {
               Magic Chat
             </Typography>
           </div>
-          <div className=" w-full bg-localColor my-5 overflow-hidden rounded-md flex justify-between items-center">
+          {/* <div className=" w-full bg-localColor text-activePrimaryBgColor my-5 overflow-hidden rounded-md flex justify-between items-center">
             <Input
               placeholder="Search"
               className="focus:outline-none active:outline-none outline-none"
             />
             <IoIosSearch className="h-5 w-5 mr-3" />
-          </div>
+          </div> */}
           <List>
             {appRoutes.map((route, i) => {
               const { path } = route;
@@ -144,7 +144,7 @@ export default function Routes() {
                               className={`h-10 ${
                                 path == pathName
                                   ? "bg-localColor text-activePrimaryBgColor font-bold"
-                                  : ""
+                                  : "text-localColor"
                               }`}
                             >
                               <ListItemPrefix>
@@ -164,7 +164,7 @@ export default function Routes() {
                   // selected={open === i}
                   className={`px-3 mb-2 h-12 ${
                     pathName.includes(path)
-                      ? "bg-activePrimaryBgColor text-localColor font-bold"
+                      ? "bg-localColor text-activePrimaryBgColor font-bold"
                       : ""
                   }`}
                   onClick={() => {
@@ -223,7 +223,7 @@ export default function Routes() {
               Log Out
             </ListItem>
           </List>
-          <Alert
+          {/* <Alert
             open={true}
             className="mt-auto"
             onClose={() => setOpenAlert(false)}
@@ -254,7 +254,7 @@ export default function Routes() {
                 Upgrade Now
               </Typography>
             </div>
-          </Alert>
+          </Alert> */}
         </Card>
       </Drawer>
     </>

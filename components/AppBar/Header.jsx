@@ -38,7 +38,7 @@ function Header({ sidebarClick, open, setshowChat, showChat }) {
     <div className="navbar bg-primaryBgColor shadow-lg text-secondaryBgColor">
     {/* <Sidebar /> */}
       <div className="flex-1">
-        <div onClick={handleSidebarClick} className="cursor-pointer bg-localColor p-1.5 mx-3 rounded-lg">
+        <div onClick={handleSidebarClick} className="cursor-pointer text-activePrimaryBgColor p-1.5 mx-3 rounded-lg">
           {/* {open ? (
             <IoMdClose className="text-secondaryBgColor mx-3 text-3xl" />
           ) : ( */}

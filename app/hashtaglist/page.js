@@ -34,12 +34,12 @@ function page() {
   
     const columns = [
       { field: "Creater", headerName: "Creater", flex: 1,renderCell: (params) => {
-        return <span>{params.row?.sender?.name}</span>
+        return <span className='capitalize'>{params.row?.sender?.userName}</span>
       } },
       { field: "content", headerName: "Content", flex: 1 },
       { field: "Status", headerName: "Status",  align: "center",
       headerAlign: "center", flex: 1 , renderCell: (params) => {
-        return params.row?.hashtagStatus ? <div className="badge badge-accent">Active</div> : <div className="badge badge-secondary">Expire</div>
+        return params.row?.hashtagStatus ? <div className="badge !badge-success !text-white">Active</div> : <div className="badge !badge-error !text-white">Expire</div>
       }},
       { field: "Message", headerName: "Message count",  align: "center",
       headerAlign: "center", flex: 1 , renderCell: (params) => {

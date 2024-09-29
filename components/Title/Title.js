@@ -19,7 +19,7 @@ function Title({title, themeView}) {
   };
   return (
     <div className="flex justify-between items-center my-4">
-      <h2 className="text-3xl font-bold text-activePrimaryBgColor">{title}</h2>
+      <h2 className="text-xl font-semibold text-activePrimaryBgColor">{title}</h2>
       {themeView && <div>
         <IoMdColorWand onClick={showHideToggle} className="w-7 h-7 animate-pulse cursor-pointer" />
       </div>}
