@@ -124,9 +124,9 @@ function page() {
       flex: 1,
       renderCell: (params) => {
         return params.value ? (
-          <div className="badge !badge-accent">Active</div>
+          <div className="badge !badge-success !text-white">Active</div>
         ) : (
-          <div className="badge !badge-secondary">Over</div>
+          <div className="badge !badge-error !text-white">Inactive</div>
         );
       },
     },

@@ -64,6 +64,13 @@ const appRoutes = [
       },
     ],
   },
+  {
+    path: "/theme",
+    sidebarProps: {
+      displayText: "Theme",
+      Icon: VscSymbolColor,
+    }
+  },
   // {
   //   path: "/theme/",
   //   sidebarProps: {

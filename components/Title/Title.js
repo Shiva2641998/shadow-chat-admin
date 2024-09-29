@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { IoMdColorWand } from "react-icons/io";
 import { useAppDispatch } from "../../store/store";
-import { previewToggle } from "../../store/themeSlice";
+import { closePreviewToggle, previewToggle } from "../../store/themeSlice";
 import { useDispatch } from "react-redux";
 
 function Title({title, themeView}) {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if(!themeView){
+      dispatch(closePreviewToggle())
+    }
+  }, [])
+  
 
     const showHideToggle = () => {
     dispatch(previewToggle())

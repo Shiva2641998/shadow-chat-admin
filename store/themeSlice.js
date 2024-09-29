@@ -26,6 +26,9 @@ export const themeSlice = createSlice({
     previewToggle: (state) => {
       state.preview = !state.preview;
     },
+    closePreviewToggle: (state) => {
+      state.preview = false;
+    },
     setAccessTokenInfo: (state, action) => {
       console.log("login",action.payload)
       state.access_token = action.payload;
@@ -39,5 +42,5 @@ export const themeSlice = createSlice({
   },
 });
 
-export const { setAuthState, previewToggle, setAccessTokenInfo, setPreviewDataInfo, setSidebar } = themeSlice.actions;
+export const { setAuthState, previewToggle, closePreviewToggle, setAccessTokenInfo, setPreviewDataInfo, setSidebar } = themeSlice.actions;
 export const themeReducer = themeSlice.reducer;
