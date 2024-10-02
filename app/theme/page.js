@@ -10,7 +10,7 @@ import { setPreviewDataInfo } from "../../store/themeSlice";
 function page() {
   const { GET, PUT } = useRequestApiAction();
   const [themeInfo, setthemeInfo] = useState({})
-  const {header, bubble } = themeInfo ?? {};
+  const {header, bubble, signup } = themeInfo ?? {};
   const [isPending, startTransition] = useTransition(); 
 
   const getThemeUI = async () => {
@@ -35,6 +35,28 @@ function page() {
   }, [])
   console.log(themeInfo,"themeInfo")
 
+//   signup
+// : 
+// {primaryLoginColor: "rgb(30, 30, 42)", primaryRegisterColor: "rgb(108 216 193)",…}
+// primaryLoginColor
+// : 
+// "rgb(30, 30, 42)"
+// primaryLoginTextColor
+// : 
+// "rgb(30, 30, 42)"
+// primaryRegisterColor
+// : 
+// "rgb(108 216 193)"
+// primaryRegisterTextColor
+// : 
+// "rgb(30, 30, 42)"
+// secondaryColor
+// : 
+// "rgb(30, 30, 42)"
+// secondaryTextColor
+// : 
+
+
   return (
     <>
       <Title title="Theme" themeView={true} />
@@ -45,6 +67,20 @@ function page() {
           <div className="collapse-title text-md font-medium">Home</div>
           <div className="collapse-content bg-localColor text-black pt-2">
             <Main header={header} setthemeInfo={setthemeInfo} />
+          </div>
+        </div>
+        <div className="collapse collapse-plus bg-activePrimaryBgColor text-localColor mb-2">
+          <input type="radio" name="my-accordion-3" />
+          <div className="collapse-title text-md font-medium">Login</div>
+          <div className="collapse-content bg-localColor text-black pt-2">
+            <LoginScreen signup={signup} setthemeInfo={setthemeInfo} />
+          </div>
+        </div>
+        <div className="collapse collapse-plus bg-activePrimaryBgColor text-localColor mb-2">
+          <input type="radio" name="my-accordion-3" />
+          <div className="collapse-title text-md font-medium">Register</div>
+          <div className="collapse-content bg-localColor text-black pt-2">
+            <RegisterScreen signup={signup} setthemeInfo={setthemeInfo} />
           </div>
         </div>
         <div className="collapse collapse-plus bg-activePrimaryBgColor text-localColor mb-2">
@@ -201,6 +237,88 @@ const ChatBubble = ({bubble, setthemeInfo}) => {
       <div className="flex flex-col">
         <p className="mb-2">Icon</p>
         <ImagePick value={bubble?.icon} onChange={(e) => handleChange("icon",e)} />
+      </div>
+    </div>
+  );
+};
+
+const LoginScreen = ({signup, setthemeInfo}) => {
+
+  const dispatch = useDispatch();
+
+  const handleChange = (key, val) => {
+    setthemeInfo((prev) => {
+      let newData =  {
+        ...prev,
+        signup : {
+          ...prev?.signup,
+            [key]: val
+        }
+      }
+      dispatch(
+        setPreviewDataInfo({
+          type: "/chat/bubble",
+          data: newData,
+        })
+      );
+      return newData
+    })
+  }
+
+  return (
+    <div className="grid grid-cols-3 gap-10">
+      <div className="flex flex-col">
+        <p className="mb-2">Background color</p>
+        <ColorPick val={signup?.primaryLoginColor} onColorChange={(e) => handleChange("primaryLoginColor",e)} />
+      </div>
+      <div className="flex flex-col">
+        <p className="mb-2">Color</p>
+        <ColorPick val={signup?.primaryLoginTextColor} onColorChange={(e) => handleChange("primaryLoginTextColor",e)} />
+      </div>
+      <div className="flex flex-col">
+        <p className="mb-2">Icon</p>
+        <ImagePick value={signup?.loginImage} onChange={(e) => handleChange("loginImage",e)} />
+      </div>
+    </div>
+  );
+};
+
+const RegisterScreen = ({signup, setthemeInfo}) => {
+
+  const dispatch = useDispatch();
+
+  const handleChange = (key, val) => {
+    setthemeInfo((prev) => {
+      let newData =  {
+        ...prev,
+        signup : {
+          ...prev?.signup,
+            [key]: val
+        }
+      }
+      dispatch(
+        setPreviewDataInfo({
+          type: "/chat/bubble",
+          data: newData,
+        })
+      );
+      return newData
+    })
+  }
+
+  return (
+    <div className="grid grid-cols-3 gap-10">
+      <div className="flex flex-col">
+        <p className="mb-2">Background color</p>
+        <ColorPick val={signup?.primaryRegisterColor} onColorChange={(e) => handleChange("primaryRegisterColor",e)} />
+      </div>
+      <div className="flex flex-col">
+        <p className="mb-2">Color</p>
+        <ColorPick val={signup?.primaryRegisterTextColor} onColorChange={(e) => handleChange("primaryRegisterTextColor",e)} />
+      </div>
+      <div className="flex flex-col">
+        <p className="mb-2">Icon</p>
+        <ImagePick value={signup?.registerImage} onChange={(e) => handleChange("registerImage",e)} />
       </div>
     </div>
   );
