@@ -3,6 +3,8 @@ import ChatPage from "./ChatPage";
 import ChatQuiz from "./ChatQuiz";
 import ChatList from "./ChatList";
 import ChatFanzone from "./ChatFanzone";
+import EmptyView from "./EmptyView";
+import ChatBubble from "./ChatBubble";
 import { usePathname } from "next/navigation";
 import { useSelector } from "react-redux";
 
@@ -15,7 +17,7 @@ function PreviewComponent() {
 // console.log("pathname::",pathname)
 const { previewData } = useSelector((state) => state.theme);
   const { data, type } = previewData;
-  
+  console.log(type)
   switch (type) {
     case "/chat/rooms":
       return <ChatPage path={type} />;
@@ -23,8 +25,12 @@ const { previewData } = useSelector((state) => state.theme);
       return <ChatQuiz path={type} />;
     case "/chat/fanzone":
       return <ChatFanzone path={type} />;
-    default:
+    case "/chat/list":
       return <ChatList path={type} />;
+    case "/chat/bubble":
+      return <ChatBubble path={type} />;
+    default:
+      return <EmptyView path={type} />;
     //   return <saytv-chat bubble="false" authentication="true"></saytv-chat>;
   }
 }

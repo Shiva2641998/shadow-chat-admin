@@ -19,7 +19,6 @@ export const themeSlice = createSlice({
       state.authState = action.payload;
     },
     setSidebar: (state, action) => {
-      console.log(action.payload,"state")
       state.sidebar.isDrawerOpen = !state.sidebar?.isDrawerOpen;
       state.sidebar.pathName = action.payload ?? state.sidebar.pathName;
     },
@@ -30,12 +29,10 @@ export const themeSlice = createSlice({
       state.preview = false;
     },
     setAccessTokenInfo: (state, action) => {
-      console.log("login",action.payload)
       state.access_token = action.payload;
     },
     setPreviewDataInfo: (state, action) => {
       if(action.payload?.data){
-        console.log(action.payload,"action.payload")
         state.previewData = {...action.payload};
       }
     },

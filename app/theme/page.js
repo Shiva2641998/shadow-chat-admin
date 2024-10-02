@@ -1,9 +1,40 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import ColorPick from "./ColorPick";
 import Title from "../../components/Title/Title";
+import { useRequestApiAction } from "../../axios/requests/useRequestApiAction";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setPreviewDataInfo } from "../../store/themeSlice";
 
 function page() {
+  const { GET, PUT } = useRequestApiAction();
+  const [themeInfo, setthemeInfo] = useState({})
+  const {header, bubble } = themeInfo ?? {};
+  const [isPending, startTransition] = useTransition(); 
+
+  const getThemeUI = async () => {
+    const { data } = await GET("/theme");
+    if(data.success){
+      setthemeInfo(data.data[0])
+    }
+  };
+
+  const applyTheme = () => {
+    startTransition(async() => {
+      const { data } = await PUT(`/theme/${themeInfo?._id}`, themeInfo);
+      if(data.success){
+        // setthemeInfo(data.data[0])
+        toast.success("Apply Changes")
+      }
+    })
+  }
+
+  useEffect(() => {
+    getThemeUI()
+  }, [])
+  console.log(themeInfo,"themeInfo")
+
   return (
     <>
       <Title title="Theme" themeView={true} />
@@ -13,14 +44,14 @@ function page() {
           <input type="radio" name="my-accordion-3" defaultChecked />
           <div className="collapse-title text-md font-medium">Home</div>
           <div className="collapse-content bg-localColor text-black pt-2">
-            <Main />
+            <Main header={header} setthemeInfo={setthemeInfo} />
           </div>
         </div>
         <div className="collapse collapse-plus bg-activePrimaryBgColor text-localColor mb-2">
           <input type="radio" name="my-accordion-3" />
           <div className="collapse-title text-md font-medium">Chat Bubble</div>
           <div className="collapse-content bg-localColor text-black pt-2">
-            <ChatBubble />
+            <ChatBubble bubble={bubble} setthemeInfo={setthemeInfo} />
           </div>
         </div>
         <div className="collapse collapse-plus bg-activePrimaryBgColor text-localColor mb-2">
@@ -69,8 +100,8 @@ function page() {
       </div>
       </div> */}
         <div className="flex">
-          <button className="bg-activePrimaryBgColor text-localColor px-4 py-2 rounded-lg">
-            Save Changes
+          <button onClick={applyTheme} disabled={isPending} className="bg-activePrimaryBgColor text-localColor px-4 py-2 rounded-lg">
+            {isPending ? 'Submitting...' : 'Save Changes'}
           </button>
         </div>
       </div>
@@ -81,6 +112,7 @@ function page() {
 export default page;
 
 const Themes = () => {
+
   const theme = [
     {
       url: "https://store.enappd.com/wp-content/uploads/2019/01/8-399x800.png",
@@ -99,7 +131,9 @@ const Themes = () => {
       price: 20,
     },
   ];
+
   const [selected, setselected] = useState(0);
+
   return (
     <div className="grid grid-cols-6 gap-10">
       {theme.map((e, i) => (
@@ -131,43 +165,88 @@ const Themes = () => {
   );
 };
 
-const ChatBubble = () => {
+const ChatBubble = ({bubble, setthemeInfo}) => {
+
+  const dispatch = useDispatch();
+
+  const handleChange = (key, val) => {
+    setthemeInfo((prev) => {
+      let newData =  {
+        ...prev,
+        bubble : {
+          ...prev?.bubble,
+            [key]: val
+        }
+      }
+      dispatch(
+        setPreviewDataInfo({
+          type: "/chat/bubble",
+          data: newData,
+        })
+      );
+      return newData
+    })
+  }
+
   return (
     <div className="grid grid-cols-3 gap-10">
       <div className="flex flex-col">
         <p className="mb-2">Background color</p>
-        <ColorPick />
+        <ColorPick val={bubble?.backgroundColor} onColorChange={(e) => handleChange("backgroundColor",e)} />
       </div>
       <div className="flex flex-col">
         <p className="mb-2">Color</p>
-        <ColorPick />
+        <ColorPick val={bubble?.textColor} onColorChange={(e) => handleChange("textColor",e)} />
       </div>
       <div className="flex flex-col">
         <p className="mb-2">Icon</p>
-        <ImagePick />
+        <ImagePick value={bubble?.icon} onChange={(e) => handleChange("icon",e)} />
       </div>
     </div>
   );
 };
 
-const Main = () => {
+const Main = ({header, setthemeInfo}) => {
+  // console.log(header?.backgroundColor,"header?.backgroundColor")
+
+  const dispatch = useDispatch();
+
+  const handleChange = (key, val) => {
+    setthemeInfo((prev) => {
+      let newData =  {
+        ...prev,
+        header : {
+          ...prev?.header,
+            [key]: val
+        }
+      }
+      dispatch(
+        setPreviewDataInfo({
+          type: "/chat/list",
+          data: newData,
+        })
+      );
+      return newData
+    })
+  }
+
   return (
     <div className="grid grid-cols-3 gap-10">
       <div className="flex flex-col">
         <p className="mb-2">Primary color</p>
-        <ColorPick />
+        <ColorPick val={header?.backgroundColor} onColorChange={(e) => handleChange("backgroundColor",e)} />
       </div>
-      <div className="flex flex-col">
+      {/* <div className="flex flex-col">
         <p className="mb-2">Secondary color</p>
         <ColorPick />
-      </div>
+      </div> */}
       <div className="flex flex-col">
         <p className="mb-2">text color</p>
-        <ColorPick />
+        <ColorPick val={header?.textColor} onColorChange={(e) => handleChange("textColor",e)} />
       </div>
       <div className="flex flex-col">
         <p className="mb-2">Logo</p>
-        <ImagePick />
+        <ImagePick value={header?.logo} onChange={(e) => handleChange("logo",e)} />
       </div>
     </div>
   );
@@ -189,7 +268,7 @@ const ImagePick = ({
           <input
             className="h-8 rounded-md outline-none bg-white z-10"
             onChange={(e) => {
-              onChange(e);
+              onChange(e.target.value);
               setEditImage(false);
             }}
           />
@@ -198,6 +277,7 @@ const ImagePick = ({
         <>
           <img
             src={value}
+            alt="image"
             className="max-w-40 max-h-40 rounded-lg cursor-pointer"
             onClick={() => setEditImage(true)}
           />

@@ -2,10 +2,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import { SketchPicker } from "react-color";
 
-function ColorPick({className="", subclassName=""}) {
+function ColorPick({className="", subclassName="", val =  "transparent", onColorChange}) {
   const pickerRef = useRef(null);
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
-  const [color, setColor] = useState("transparent");
+  const [color, setColor] = useState(val);
+
+  useEffect(() => {
+    setColor(val)
+  }, [val])
+  
+
   const handleClickOutside = (event) => {
     if (pickerRef.current && !pickerRef.current.contains(event.target)) {
       setDisplayColorPicker(false);
@@ -22,6 +28,7 @@ function ColorPick({className="", subclassName=""}) {
   // Handle color change
   const handleChangeComplete = (color) => {
     setColor(color.hex);
+    onColorChange(color.hex)
     // handleProcessRowUpdate(params,color.hex)
   };
   
@@ -41,7 +48,7 @@ function ColorPick({className="", subclassName=""}) {
         </div>
       ) : (
         <div
-          className={`border-2 border-gray-200 rounded-md w-14 h-8 p-1 z-10 flex justify-center items-center ${subclassName}`}
+          className={`border-2 border-activePrimaryBgColor rounded-md w-14 h-8 p-1 z-10 flex justify-center items-center ${subclassName}`}
         >
           <span
             className={`w-full h-full`}

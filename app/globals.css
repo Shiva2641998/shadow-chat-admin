@@ -26,6 +26,10 @@ body {
   }
 }
 
+.collapse{
+  overflow: visible !important;
+}
+
 .collapse-arrow > .collapse-title:after{
   top: 1.5rem;
 }
