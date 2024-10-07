@@ -326,6 +326,7 @@ const RegisterScreen = ({signup, setthemeInfo}) => {
 
 const Main = ({header, setthemeInfo}) => {
   // console.log(header?.backgroundColor,"header?.backgroundColor")
+  const { POST } = useRequestApiAction();
 
   const dispatch = useDispatch();
 
@@ -348,16 +349,20 @@ const Main = ({header, setthemeInfo}) => {
     })
   }
 
+  const applyAll = async() => {
+      const {data} =  await POST("/theme/applyForAll", { bgcolor: header?.backgroundColor, color: header?.textColor });
+      console.log(data,"data");
+      if(data?.success){
+        toast("Apply colors for all chat")
+      }
+  }
+
   return (
     <div className="grid grid-cols-3 gap-10">
       <div className="flex flex-col">
         <p className="mb-2">Primary color</p>
         <ColorPick val={header?.backgroundColor} onColorChange={(e) => handleChange("backgroundColor",e)} />
       </div>
-      {/* <div className="flex flex-col">
-        <p className="mb-2">Secondary color</p>
-        <ColorPick />
-      </div> */}
       <div className="flex flex-col">
         <p className="mb-2">text color</p>
         <ColorPick val={header?.textColor} onColorChange={(e) => handleChange("textColor",e)} />
@@ -365,6 +370,9 @@ const Main = ({header, setthemeInfo}) => {
       <div className="flex flex-col">
         <p className="mb-2">Logo</p>
         <ImagePick value={header?.logo} onChange={(e) => handleChange("logo",e)} />
+      </div>
+      <div>
+        <button onClick={applyAll} className="bg-activePrimaryBgColor text-localColor px-4 py-2 rounded-lg">Apply all</button>
       </div>
     </div>
   );
