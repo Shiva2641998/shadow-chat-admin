@@ -7,7 +7,7 @@ const initialState = {
   },
   authState: false,
   preview: false,
-  access_token: {},
+  access_token: false,
   previewData: {}
 };
 

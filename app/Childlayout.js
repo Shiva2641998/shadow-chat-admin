@@ -4,19 +4,23 @@ import Image from "next/image";
 import { useState } from "react";
 import cellPhone from "./cell.webp";
 import Sidebar from "../components/AppBar/Sidebar";
+import Signin from "../components/Signin/Signin";
 import PreviewComponent from "..//components/Preview/PreviewComponent";
 import { useAppSelector } from "../store/store";
 import { Bounce, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { useSelector } from "react-redux";
 
 function Childlayout({ children }) {
   const [sidebarShow, setsidebarShow] = useState(true);
   const { preview } = useAppSelector((state) => state.theme);
   const [showChat, setshowChat] = useState(false)
-
+  const accessToken = useSelector((state) => state.theme.access_token);
+console.log(accessToken,"accessToken")
   const sidebarHandle = () => {
     setsidebarShow(!sidebarShow);
   };
+
   return (
     <div className="flex h-screen bg-slate-100">
       <ToastContainer position="top-right"
@@ -36,6 +40,7 @@ function Childlayout({ children }) {
       > */}
         {/* <Sidebar /> */}
       {/* </div> */}
+      {!accessToken ? <Signin /> : <>
       <div className="h-full transition-all" style={{
         width: showChat ? '75%' : '100%'
       }}>
@@ -76,6 +81,7 @@ function Childlayout({ children }) {
       <div>
       {/* <saytv-chat bubble="true" width="30" height="100" authentication="true"></saytv-chat> */}
       </div>
+      </>}
     </div>
   );
 }

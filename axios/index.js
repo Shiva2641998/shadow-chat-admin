@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 
-// const baseURL = "http://localhost:8080/api";
+const baseURL = "http://localhost:8080/api";
 
-const baseURL = 'https://chat-app-backend-2miw.onrender.com/api'
+// const baseURL = 'https://chat-app-backend-2miw.onrender.com/api'
 
 // const axiosRequest = axios.create({
 // 	baseURL: baseURL,
@@ -26,7 +26,6 @@ const useCreateAxiosInstance = () => {
 	  },
 	});
   };
-  
 
 
 export default useCreateAxiosInstance

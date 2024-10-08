@@ -17,8 +17,12 @@ export function useRequestApiAction() {
   };
   
   const POST = async (path, data) => {
-    const res = await axiosInstance.post(path, data);
-    return res;
+    try {
+      const res = await axiosInstance.post(path, data);
+      return res;
+    } catch (error) {
+      console.log("err:", error)
+    }
   };
 
   const PUT = async (path, data) => {
