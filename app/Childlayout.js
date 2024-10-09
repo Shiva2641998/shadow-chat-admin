@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import Header from "../components/AppBar/Header";
 import Image from "next/image";
 import { useState } from "react";
@@ -10,35 +10,48 @@ import { useAppSelector } from "../store/store";
 import { Bounce, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from "react-redux";
+// import 'shadow-chatbox'
 
 function Childlayout({ children }) {
   const [sidebarShow, setsidebarShow] = useState(true);
   const { preview } = useAppSelector((state) => state.theme);
   const [showChat, setshowChat] = useState(false)
   const accessToken = useSelector((state) => state.theme.access_token);
-console.log(accessToken,"accessToken")
+
   const sidebarHandle = () => {
     setsidebarShow(!sidebarShow);
   };
 
-  const scriptId = "saytv-chat-script";
-
-  useEffect(() => {
-    const addScript = () => {
-      const script = document.createElement("script");
-      script.src =
-        "https://shiva2641998.github.io/shadow-chat-bundle/shadow-chat.js";
-      script.type = "module";
-      script.id = scriptId;
-
-      // Once script loads, create the custom element
-      script.onload = () => {};
-
-      document.body.appendChild(script);
-    };
-
-    addScript();
+  useLayoutEffect(() => {
+    // Import the shadow-chatbox only after the component mounts
+    if(accessToken){
+      import('shadow-chatbox');
+    }
   }, [accessToken]);
+
+  // const scriptId = "saytv-chat-script";
+
+  // useEffect(() => {
+  //   let found = document.getElementById(scriptId);
+  //   if(!found){
+
+  //   const addScript = () => {
+  //     const script = document.createElement("script");
+  //     script.src =
+  //       "https://shiva2641998.github.io/shadow-chat-bundle/shadow-chat.js";
+  //     script.type = "module";
+  //     script.id = scriptId;
+
+  //     // Once script loads, create the custom element
+  //     script.onload = () => {};
+
+  //     document.body.appendChild(script);
+  //   };
+  //   // addScript();
+  // }
+
+
+  // }, [accessToken]);
 
   return (
     <div className="flex h-screen bg-slate-100">
@@ -59,7 +72,8 @@ console.log(accessToken,"accessToken")
       > */}
         {/* <Sidebar /> */}
       {/* </div> */}
-      {!accessToken ? <Signin /> : <>
+      {!accessToken ? <Signin /> : (
+      <>
       <div className="h-full transition-all" style={{
         width: showChat ? '75%' : '100%'
       }}>
@@ -95,12 +109,13 @@ console.log(accessToken,"accessToken")
         width: showChat ? "25%" : "",
         margin: showChat ? "0px 10px" : ""
       }}>
-        <saytv-chat bubble={showChat ? "false" : "true"} width={showChat ? "100" : "30"} height="100" authentication="true"></saytv-chat>
+       {accessToken && <saytv-chat bubble={showChat ? "false" : "true"} width={showChat ? "100" : "30"} height="100" authentication="false" accessToken={accessToken}></saytv-chat>}
       </div> 
       <div>
       {/* <saytv-chat bubble="true" width="30" height="100" authentication="true"></saytv-chat> */}
       </div>
-      </>}
+      </>
+     )} 
     </div>
   );
 }
