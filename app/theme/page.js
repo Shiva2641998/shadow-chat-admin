@@ -6,56 +6,56 @@ import { useRequestApiAction } from "../../axios/requests/useRequestApiAction";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setPreviewDataInfo } from "../../store/themeSlice";
+import { FaTrash } from "react-icons/fa6";
 
 function page() {
   const { GET, PUT } = useRequestApiAction();
-  const [themeInfo, setthemeInfo] = useState({})
-  const {header, bubble, signup } = themeInfo ?? {};
-  const [isPending, startTransition] = useTransition(); 
+  const [themeInfo, setthemeInfo] = useState({});
+  const { header, bubble, signup, fontFamily } = themeInfo ?? {};
+  const [isPending, startTransition] = useTransition();
 
   const getThemeUI = async () => {
     const { data } = await GET("/theme");
-    if(data.success){
-      setthemeInfo(data.data[0])
+    if (data.success) {
+      setthemeInfo(data.data[0]);
     }
   };
 
   const applyTheme = () => {
-    startTransition(async() => {
+    startTransition(async () => {
       const { data } = await PUT(`/theme/${themeInfo?._id}`, themeInfo);
-      if(data.success){
+      if (data.success) {
         // setthemeInfo(data.data[0])
-        toast.success("Apply Changes")
+        toast.success("Apply Changes");
       }
-    })
-  }
+    });
+  };
 
   useEffect(() => {
-    getThemeUI()
-  }, [])
-  console.log(themeInfo,"themeInfo")
+    getThemeUI();
+  }, []);
+  console.log(themeInfo, "themeInfo");
 
-//   signup
-// : 
-// {primaryLoginColor: "rgb(30, 30, 42)", primaryRegisterColor: "rgb(108 216 193)",…}
-// primaryLoginColor
-// : 
-// "rgb(30, 30, 42)"
-// primaryLoginTextColor
-// : 
-// "rgb(30, 30, 42)"
-// primaryRegisterColor
-// : 
-// "rgb(108 216 193)"
-// primaryRegisterTextColor
-// : 
-// "rgb(30, 30, 42)"
-// secondaryColor
-// : 
-// "rgb(30, 30, 42)"
-// secondaryTextColor
-// : 
-
+  //   signup
+  // :
+  // {primaryLoginColor: "rgb(30, 30, 42)", primaryRegisterColor: "rgb(108 216 193)",…}
+  // primaryLoginColor
+  // :
+  // "rgb(30, 30, 42)"
+  // primaryLoginTextColor
+  // :
+  // "rgb(30, 30, 42)"
+  // primaryRegisterColor
+  // :
+  // "rgb(108 216 193)"
+  // primaryRegisterTextColor
+  // :
+  // "rgb(30, 30, 42)"
+  // secondaryColor
+  // :
+  // "rgb(30, 30, 42)"
+  // secondaryTextColor
+  // :
 
   return (
     <>
@@ -88,6 +88,13 @@ function page() {
           <div className="collapse-title text-md font-medium">Chat Bubble</div>
           <div className="collapse-content bg-localColor text-black pt-2">
             <ChatBubble bubble={bubble} setthemeInfo={setthemeInfo} />
+          </div>
+        </div>
+        <div className="collapse collapse-plus bg-activePrimaryBgColor text-localColor mb-2">
+          <input type="radio" name="my-accordion-3" />
+          <div className="collapse-title text-md font-medium">Font Family</div>
+          <div className="collapse-content bg-localColor text-black pt-2">
+            <FontFamily fontFamily={fontFamily} setthemeInfo={setthemeInfo} />
           </div>
         </div>
         <div className="collapse collapse-plus bg-activePrimaryBgColor text-localColor mb-2">
@@ -136,8 +143,12 @@ function page() {
       </div>
       </div> */}
         <div className="flex">
-          <button onClick={applyTheme} disabled={isPending} className="bg-activePrimaryBgColor text-localColor px-4 py-2 rounded-lg">
-            {isPending ? 'Submitting...' : 'Save Changes'}
+          <button
+            onClick={applyTheme}
+            disabled={isPending}
+            className="bg-activePrimaryBgColor text-localColor px-4 py-2 rounded-lg"
+          >
+            {isPending ? "Submitting..." : "Save Changes"}
           </button>
         </div>
       </div>
@@ -148,7 +159,6 @@ function page() {
 export default page;
 
 const Themes = () => {
-
   const theme = [
     {
       url: "https://store.enappd.com/wp-content/uploads/2019/01/8-399x800.png",
@@ -177,10 +187,10 @@ const Themes = () => {
           className={`flex relative flex-col cursor-pointer justify-center items-center w-fit p-3 rounded-xl `}
         >
           <img
-            src={'https://www.pngall.com/wp-content/uploads/8/Green-Check-Mark-PNG-Clipart.png'}
-            className={`w-8 mb-3 h-full ${
-              i == selected ? "" : "invisible"
-            }`}
+            src={
+              "https://www.pngall.com/wp-content/uploads/8/Green-Check-Mark-PNG-Clipart.png"
+            }
+            className={`w-8 mb-3 h-full ${i == selected ? "" : "invisible"}`}
             onClick={() => setselected(i)}
           />
           <img
@@ -201,130 +211,235 @@ const Themes = () => {
   );
 };
 
-const ChatBubble = ({bubble, setthemeInfo}) => {
+const FontFamily = ({ fontFamily, setthemeInfo }) => {
+  const dispatch = useDispatch();
+  const [fonturl, setfonturl] = useState({
+    font: "",
+    fontSize: 5,
+  });
 
+  const handleChange = () => {
+    setthemeInfo((prev) => {
+      let newData = {
+        ...prev,
+        fontFamily: prev?.fontFamily?.length > 0 ? [...prev?.fontFamily, fonturl] : [fonturl],
+      };
+      return newData;
+    });
+    setfonturl({
+      font: "",
+      fontSize: 5,
+    });
+  };
+
+  const handleRemoveChange = (index) => {
+    setthemeInfo((prev) => {
+      const filterFont = prev?.fontFamily.filter((e,i) => i != index)
+      let newData = {
+        ...prev,
+        fontFamily: filterFont,
+      };
+      return newData;
+    });
+  };
+
+  return (
+    <div className="p-2">
+      <div>
+        <input
+          placeholder="Enter Google font URL"
+          onChange={(e) =>
+            setfonturl((p) => {
+              return { ...p, font: e.target.value };
+            })
+          }
+          value={fonturl.font}
+          className="w-9/12 p-2 bg-primaryBgColor rounded-md mr-3"
+        />
+        <input
+          placeholder="Font Size (PX)"
+          min={5}
+          type="number"
+          onChange={(e) =>
+            setfonturl((p) => {
+              return { ...p, fontSize: e.target.value };
+            })
+          }
+          value={fonturl.fontSize}
+          className=" p-2 bg-primaryBgColor rounded-md mr-3"
+        />
+        <button
+          className="bg-activePrimaryBgColor text-localColor px-4 py-2 rounded-lg"
+          onClick={handleChange}
+        >
+          Add
+        </button>
+      </div>
+      <div className="grid grid-cols-1 gap-4 p-2 mt-2">
+      <div className="flex items-center">
+            <p className="w-9/12 font-bold">Font Family</p>
+            <p className="ml-3 w-[10%] font-bold">Font Size</p>
+          </div>
+        {fontFamily?.map((e, i) => (
+          <div className="flex items-center">
+            <p className="w-9/12">{e.font}</p>
+            <p className="ml-3 w-[10%]">{e.fontSize}</p>
+            <FaTrash className="ml-5 bg-primaryBgColor cursor-pointer p-2 rounded-md text-3xl text-red-400" onClick={() => handleRemoveChange(i)} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const ChatBubble = ({ bubble, setthemeInfo }) => {
   const dispatch = useDispatch();
 
   const handleChange = (key, val) => {
     setthemeInfo((prev) => {
-      let newData =  {
+      let newData = {
         ...prev,
-        bubble : {
+        bubble: {
           ...prev?.bubble,
-            [key]: val
-        }
-      }
+          [key]: val,
+        },
+      };
       dispatch(
         setPreviewDataInfo({
           type: "/chat/bubble",
           data: newData,
         })
       );
-      return newData
-    })
-  }
+      return newData;
+    });
+  };
 
   return (
     <div className="grid grid-cols-3 gap-10">
       <div className="flex flex-col">
         <p className="mb-2">Background color</p>
-        <ColorPick val={bubble?.backgroundColor} onColorChange={(e) => handleChange("backgroundColor",e)} />
+        <ColorPick
+          val={bubble?.backgroundColor}
+          onColorChange={(e) => handleChange("backgroundColor", e)}
+        />
       </div>
       <div className="flex flex-col">
         <p className="mb-2">Color</p>
-        <ColorPick val={bubble?.textColor} onColorChange={(e) => handleChange("textColor",e)} />
+        <ColorPick
+          val={bubble?.textColor}
+          onColorChange={(e) => handleChange("textColor", e)}
+        />
       </div>
       <div className="flex flex-col">
         <p className="mb-2">Icon</p>
-        <ImagePick value={bubble?.icon} onChange={(e) => handleChange("icon",e)} />
+        <ImagePick
+          value={bubble?.icon}
+          onChange={(e) => handleChange("icon", e)}
+        />
       </div>
     </div>
   );
 };
 
-const LoginScreen = ({signup, setthemeInfo}) => {
-
+const LoginScreen = ({ signup, setthemeInfo }) => {
   const dispatch = useDispatch();
 
   const handleChange = (key, val) => {
     setthemeInfo((prev) => {
-      let newData =  {
+      let newData = {
         ...prev,
-        signup : {
+        signup: {
           ...prev?.signup,
-            [key]: val
-        }
-      }
+          [key]: val,
+        },
+      };
       dispatch(
         setPreviewDataInfo({
           type: "/chat/bubble",
           data: newData,
         })
       );
-      return newData
-    })
-  }
+      return newData;
+    });
+  };
 
   return (
     <div className="grid grid-cols-3 gap-10">
       <div className="flex flex-col">
         <p className="mb-2">Background color</p>
-        <ColorPick val={signup?.primaryLoginColor} onColorChange={(e) => handleChange("primaryLoginColor",e)} />
+        <ColorPick
+          val={signup?.primaryLoginColor}
+          onColorChange={(e) => handleChange("primaryLoginColor", e)}
+        />
       </div>
       <div className="flex flex-col">
         <p className="mb-2">Color</p>
-        <ColorPick val={signup?.primaryLoginTextColor} onColorChange={(e) => handleChange("primaryLoginTextColor",e)} />
+        <ColorPick
+          val={signup?.primaryLoginTextColor}
+          onColorChange={(e) => handleChange("primaryLoginTextColor", e)}
+        />
       </div>
       <div className="flex flex-col">
         <p className="mb-2">Icon</p>
-        <ImagePick value={signup?.loginImage} onChange={(e) => handleChange("loginImage",e)} />
+        <ImagePick
+          value={signup?.loginImage}
+          onChange={(e) => handleChange("loginImage", e)}
+        />
       </div>
     </div>
   );
 };
 
-const RegisterScreen = ({signup, setthemeInfo}) => {
-
+const RegisterScreen = ({ signup, setthemeInfo }) => {
   const dispatch = useDispatch();
 
   const handleChange = (key, val) => {
     setthemeInfo((prev) => {
-      let newData =  {
+      let newData = {
         ...prev,
-        signup : {
+        signup: {
           ...prev?.signup,
-            [key]: val
-        }
-      }
+          [key]: val,
+        },
+      };
       dispatch(
         setPreviewDataInfo({
           type: "/chat/bubble",
           data: newData,
         })
       );
-      return newData
-    })
-  }
+      return newData;
+    });
+  };
 
   return (
     <div className="grid grid-cols-3 gap-10">
       <div className="flex flex-col">
         <p className="mb-2">Background color</p>
-        <ColorPick val={signup?.primaryRegisterColor} onColorChange={(e) => handleChange("primaryRegisterColor",e)} />
+        <ColorPick
+          val={signup?.primaryRegisterColor}
+          onColorChange={(e) => handleChange("primaryRegisterColor", e)}
+        />
       </div>
       <div className="flex flex-col">
         <p className="mb-2">Color</p>
-        <ColorPick val={signup?.primaryRegisterTextColor} onColorChange={(e) => handleChange("primaryRegisterTextColor",e)} />
+        <ColorPick
+          val={signup?.primaryRegisterTextColor}
+          onColorChange={(e) => handleChange("primaryRegisterTextColor", e)}
+        />
       </div>
       <div className="flex flex-col">
         <p className="mb-2">Icon</p>
-        <ImagePick value={signup?.registerImage} onChange={(e) => handleChange("registerImage",e)} />
+        <ImagePick
+          value={signup?.registerImage}
+          onChange={(e) => handleChange("registerImage", e)}
+        />
       </div>
     </div>
   );
 };
 
-const Main = ({header, setthemeInfo}) => {
+const Main = ({ header, setthemeInfo }) => {
   // console.log(header?.backgroundColor,"header?.backgroundColor")
   const { POST } = useRequestApiAction();
 
@@ -332,47 +447,64 @@ const Main = ({header, setthemeInfo}) => {
 
   const handleChange = (key, val) => {
     setthemeInfo((prev) => {
-      let newData =  {
+      let newData = {
         ...prev,
-        header : {
+        header: {
           ...prev?.header,
-            [key]: val
-        }
-      }
+          [key]: val,
+        },
+      };
       dispatch(
         setPreviewDataInfo({
           type: "/chat/list",
           data: newData,
         })
       );
-      return newData
-    })
-  }
+      return newData;
+    });
+  };
 
-  const applyAll = async() => {
-      const {data} =  await POST("/theme/applyForAll", { bgcolor: header?.backgroundColor, color: header?.textColor });
-      console.log(data,"data");
-      if(data?.success){
-        toast("Apply colors for all chat")
-      }
-  }
+  const applyAll = async () => {
+    const { data } = await POST("/theme/applyForAll", {
+      bgcolor: header?.backgroundColor,
+      color: header?.textColor,
+    });
+    console.log(data, "data");
+    if (data?.success) {
+      toast("Apply colors for all chat");
+    }
+  };
 
   return (
     <div className="grid grid-cols-3 gap-10">
       <div className="flex flex-col">
         <p className="mb-2">Primary color</p>
-        <ColorPick val={header?.backgroundColor} onColorChange={(e) => handleChange("backgroundColor",e)} />
+        <ColorPick
+          val={header?.backgroundColor}
+          onColorChange={(e) => handleChange("backgroundColor", e)}
+        />
       </div>
       <div className="flex flex-col">
         <p className="mb-2">text color</p>
-        <ColorPick val={header?.textColor} onColorChange={(e) => handleChange("textColor",e)} />
+        <ColorPick
+          val={header?.textColor}
+          onColorChange={(e) => handleChange("textColor", e)}
+        />
       </div>
       <div className="flex flex-col">
         <p className="mb-2">Logo</p>
-        <ImagePick value={header?.logo} onChange={(e) => handleChange("logo",e)} />
+        <ImagePick
+          value={header?.logo}
+          onChange={(e) => handleChange("logo", e)}
+        />
       </div>
       <div>
-        <button onClick={applyAll} className="bg-activePrimaryBgColor text-localColor px-4 py-2 rounded-lg">Apply all</button>
+        <button
+          onClick={applyAll}
+          className="bg-activePrimaryBgColor text-localColor px-4 py-2 rounded-lg"
+        >
+          Apply all
+        </button>
       </div>
     </div>
   );

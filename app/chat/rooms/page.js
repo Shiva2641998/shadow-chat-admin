@@ -17,6 +17,7 @@ import { MdDelete } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
 import { Box } from "@mui/material";
 import Modal from "@mui/material/Modal";
+import FontFamily from "../../../components/FontFamily/FontFamily"
 
 const style = {
   position: "absolute",
@@ -190,6 +191,22 @@ function page() {
         );
       },
     },
+    {
+      field: "FontFamily",
+      headerName: "Font Family",
+      editable: false,
+      align: "center",
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (params) => {
+        return (
+          <FontFamily
+            className="h-full"
+            
+          />
+        );
+      },
+    },
 
     {
       field: "actions",
@@ -303,7 +320,7 @@ function page() {
   return (
     <div className="h-full ">
 
-<Modal
+      <Modal
         open={addRow}
         // onClose={() => setapproveQuizData(false)}
         aria-labelledby="modal-modal-title"
@@ -399,3 +416,5 @@ function page() {
 }
 
 export default page;
+
+
