@@ -2,7 +2,7 @@ import React from "react";
 import { IoMdClose } from "react-icons/io";
 import { RiMenu2Fill } from "react-icons/ri";
 import { useRequestApiAction } from "../../axios/requests/useRequestApiAction";
-import { setSidebar } from "../../store/themeSlice";
+import { setAccessTokenInfo, setSidebar } from "../../store/themeSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { FaBell } from "react-icons/fa6";
 import Sidebar from "./Sidebar";
@@ -10,8 +10,9 @@ import { IoLogoWechat } from "react-icons/io5";
 
 function Header({ sidebarClick, open, setshowChat, showChat }) {
   const dispatch = useDispatch();
-  const accessToken = useSelector((state) => state.theme.access_tokken);
+  const accessToken = useSelector((state) => state.theme.access_token);
   // const navigate = use
+  console.log(accessToken,"accessToken")
   const handleSidebarClick = () =>{
     
     dispatch(setSidebar())
@@ -78,8 +79,10 @@ function Header({ sidebarClick, open, setshowChat, showChat }) {
               <a>Settings</a>
             </li>
             {accessToken && (
-              <li>
-                <a>Logout</a>
+              <li onClick={() => {
+                dispatch(setAccessTokenInfo(false));
+              }}>
+                <p>Logout</p>
               </li>
             )}
           </ul>

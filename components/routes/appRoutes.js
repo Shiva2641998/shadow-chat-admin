@@ -22,6 +22,10 @@ const appRoutes = [
         path: "/chat/quiz",
         displayText: "Quiz",
       },
+      {
+        path: "/chat/reportMessages",
+        displayText: "Report Messages",
+      },
     ],
   },
 
