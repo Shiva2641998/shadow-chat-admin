@@ -31,7 +31,6 @@ const { previewData } = useSelector((state) => state.theme);
       return <ChatBubble path={type} />;
     default:
       return <EmptyView path={type} />;
-    //   return <saytv-chat bubble="false" authentication="true"></saytv-chat>;
   }
 }
 

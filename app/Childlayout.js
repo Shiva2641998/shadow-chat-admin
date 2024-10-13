@@ -29,30 +29,6 @@ function Childlayout({ children }) {
     }
   }, [accessToken]);
 
-  // const scriptId = "saytv-chat-script";
-
-  // useEffect(() => {
-  //   let found = document.getElementById(scriptId);
-  //   if(!found){
-
-  //   const addScript = () => {
-  //     const script = document.createElement("script");
-  //     script.src =
-  //       "https://shiva2641998.github.io/shadow-chat-bundle/shadow-chat.js";
-  //     script.type = "module";
-  //     script.id = scriptId;
-
-  //     // Once script loads, create the custom element
-  //     script.onload = () => {};
-
-  //     document.body.appendChild(script);
-  //   };
-  //   // addScript();
-  // }
-
-
-  // }, [accessToken]);
-
   return (
     <div className="flex h-screen bg-slate-100">
       <ToastContainer position="top-right"
@@ -109,10 +85,9 @@ function Childlayout({ children }) {
         width: showChat ? "25%" : "",
         margin: showChat ? "0px 10px" : ""
       }}>
-       {accessToken && <saytv-chat bubble={showChat ? "false" : "true"} width={showChat ? "100" : "30"} height="100" authentication="false" accessToken={accessToken}></saytv-chat>}
+       {accessToken && <shadow-chat bubble={showChat ? "false" : "true"} width={showChat ? "100" : "30"} height="100" authentication="false" accessToken={accessToken}></shadow-chat>}
       </div> 
       <div>
-      {/* <saytv-chat bubble="true" width="30" height="100" authentication="true"></saytv-chat> */}
       </div>
       </>
      )} 

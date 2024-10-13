@@ -26,7 +26,6 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-black`}
       >
         <div className="relative z-50">
-        {/* <saytv-chat bubble="true" width="30" height="100" authentication="true"></saytv-chat> */}
         </div>
         <Wrapperlayout>{children}</Wrapperlayout>
       </body>
