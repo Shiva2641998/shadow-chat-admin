@@ -216,25 +216,34 @@ const FontFamily = ({ fontFamily, setthemeInfo }) => {
   const [fonturl, setfonturl] = useState({
     font: "",
     fontSize: 5,
+    fontName: "",
   });
 
   const handleChange = () => {
+    if(fonturl.font==""){
+      alert("Font url required");
+      return
+    }
     setthemeInfo((prev) => {
       let newData = {
         ...prev,
-        fontFamily: prev?.fontFamily?.length > 0 ? [...prev?.fontFamily, fonturl] : [fonturl],
+        fontFamily:
+          prev?.fontFamily?.length > 0
+            ? [...prev?.fontFamily, fonturl]
+            : [fonturl],
       };
       return newData;
     });
     setfonturl({
       font: "",
       fontSize: 5,
+      fontName:""
     });
   };
 
   const handleRemoveChange = (index) => {
     setthemeInfo((prev) => {
-      const filterFont = prev?.fontFamily.filter((e,i) => i != index)
+      const filterFont = prev?.fontFamily.filter((e, i) => i != index);
       let newData = {
         ...prev,
         fontFamily: filterFont,
@@ -246,6 +255,16 @@ const FontFamily = ({ fontFamily, setthemeInfo }) => {
   return (
     <div className="p-2">
       <div>
+        <input
+          placeholder="Enter font name"
+          onChange={(e) =>
+            setfonturl((p) => {
+              return { ...p, fontName: e.target.value };
+            })
+          }
+          value={fonturl.fontName}
+          className="w-9/12 p-2 bg-primaryBgColor rounded-md mr-3"
+        />
         <input
           placeholder="Enter Google font URL"
           onChange={(e) =>
@@ -276,15 +295,18 @@ const FontFamily = ({ fontFamily, setthemeInfo }) => {
         </button>
       </div>
       <div className="grid grid-cols-1 gap-4 p-2 mt-2">
-      <div className="flex items-center">
-            <p className="w-9/12 font-bold">Font Family</p>
-            <p className="ml-3 w-[10%] font-bold">Font Size</p>
-          </div>
+        <div className="flex items-center">
+          <p className="w-9/12 font-bold">Font Family</p>
+          <p className="ml-3 w-[10%] font-bold">Font Size</p>
+        </div>
         {fontFamily?.map((e, i) => (
           <div className="flex items-center">
             <p className="w-9/12">{e.font}</p>
             <p className="ml-3 w-[10%]">{e.fontSize}</p>
-            <FaTrash className="ml-5 bg-primaryBgColor cursor-pointer p-2 rounded-md text-3xl text-red-400" onClick={() => handleRemoveChange(i)} />
+            <FaTrash
+              className="ml-5 bg-primaryBgColor cursor-pointer p-2 rounded-md text-3xl text-red-400"
+              onClick={() => handleRemoveChange(i)}
+            />
           </div>
         ))}
       </div>
