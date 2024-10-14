@@ -296,11 +296,13 @@ const FontFamily = ({ fontFamily, setthemeInfo }) => {
       </div>
       <div className="grid grid-cols-1 gap-4 p-2 mt-2">
         <div className="flex items-center">
+        <p className="w-9/12 font-bold">Font Name</p>
           <p className="w-9/12 font-bold">Font Family</p>
           <p className="ml-3 w-[10%] font-bold">Font Size</p>
         </div>
         {fontFamily?.map((e, i) => (
           <div className="flex items-center">
+            <p className="w-9/12">{e.fontName}</p>
             <p className="w-9/12">{e.font}</p>
             <p className="ml-3 w-[10%]">{e.fontSize}</p>
             <FaTrash
