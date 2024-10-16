@@ -263,7 +263,7 @@ const FontFamily = ({ fontFamily, setthemeInfo }) => {
             })
           }
           value={fonturl.fontName}
-          className="w-9/12 p-2 bg-primaryBgColor rounded-md mr-3"
+          className="w-[20%] p-2 bg-primaryBgColor rounded-md mr-3"
         />
         <input
           placeholder="Enter Google font URL"
@@ -273,7 +273,7 @@ const FontFamily = ({ fontFamily, setthemeInfo }) => {
             })
           }
           value={fonturl.font}
-          className="w-9/12 p-2 bg-primaryBgColor rounded-md mr-3"
+          className="w-1/2 p-2 bg-primaryBgColor rounded-md mr-3"
         />
         <input
           placeholder="Font Size (PX)"
@@ -296,15 +296,15 @@ const FontFamily = ({ fontFamily, setthemeInfo }) => {
       </div>
       <div className="grid grid-cols-1 gap-4 p-2 mt-2">
         <div className="flex items-center">
-        <p className="w-9/12 font-bold">Font Name</p>
-          <p className="w-9/12 font-bold">Font Family</p>
-          <p className="ml-3 w-[10%] font-bold">Font Size</p>
+        <p className="w-[20%] font-bold">Font Name</p>
+          <p className="w-1/2 font-bold">Font Family</p>
+          <p className="w-[10%] font-bold">Font Size</p>
         </div>
         {fontFamily?.map((e, i) => (
           <div className="flex items-center">
-            <p className="w-9/12">{e.fontName}</p>
-            <p className="w-9/12">{e.font}</p>
-            <p className="ml-3 w-[10%]">{e.fontSize}</p>
+            <p className="w-[20%]">{e.fontName}</p>
+            <p className="w-1/2">{e.font}</p>
+            <p className="w-[10%]">{e.fontSize}</p>
             <FaTrash
               className="ml-5 bg-primaryBgColor cursor-pointer p-2 rounded-md text-3xl text-red-400"
               onClick={() => handleRemoveChange(i)}

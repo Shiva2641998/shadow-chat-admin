@@ -192,7 +192,7 @@ function page() {
       },
     },
     {
-      field: "FontFamily",
+      field: "fontFamily",
       headerName: "Font Family",
       editable: false,
       align: "center",
@@ -202,7 +202,8 @@ function page() {
         return (
           <FontFamily
             className="h-full"
-            
+            value={params?.row?.fontFamily}
+            onFontChange={(e) => handleProcessRowUpdate(params, e)}
           />
         );
       },
@@ -246,7 +247,7 @@ function page() {
       },
     },
   ];
-
+  console.log(rowData)
   const removeKey = (obj, keyToRemove) =>
     Object.fromEntries(
       Object.entries(obj).filter(([key]) => key !== keyToRemove)
