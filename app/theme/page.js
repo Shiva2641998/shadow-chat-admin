@@ -97,13 +97,13 @@ function page() {
             <FontFamily fontFamily={fontFamily} setthemeInfo={setthemeInfo} />
           </div>
         </div>
-        <div className="collapse collapse-plus bg-activePrimaryBgColor text-localColor mb-2">
+        {/* <div className="collapse collapse-plus bg-activePrimaryBgColor text-localColor mb-2">
           <input type="radio" name="my-accordion-3" />
           <div className="collapse-title text-md font-medium">Choice Theme</div>
           <div className="collapse-content bg-localColor text-black pt-2">
             <Themes />
           </div>
-        </div>
+        </div> */}
 
         {/* <div className="flex-1">
       <div role="tablist" className="tabs tabs-boxed bg-transparent">

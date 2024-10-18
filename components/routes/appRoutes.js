@@ -2,7 +2,7 @@ import { IoChatbubblesOutline } from "react-icons/io5";
 import { VscSymbolColor } from "react-icons/vsc";
 import { PiUsersThreeDuotone } from "react-icons/pi";
 import { RiAdvertisementFill, RiHashtag, RiShieldUserLine } from "react-icons/ri";
-import { MdOutlineContactSupport, MdOutlineEmojiEvents } from "react-icons/md";
+import { MdOutlineContactSupport, MdOutlineDashboardCustomize, MdOutlineEmojiEvents } from "react-icons/md";
 
 
 const appRoutes = [
@@ -73,6 +73,13 @@ const appRoutes = [
     sidebarProps: {
       displayText: "Theme",
       Icon: VscSymbolColor,
+    }
+  },
+  {
+    path: "/customization-tool",
+    sidebarProps: {
+      displayText: "Customization tool",
+      Icon: MdOutlineDashboardCustomize,
     }
   },
   {

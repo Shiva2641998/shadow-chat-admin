@@ -75,7 +75,7 @@ function ChatList({ path }) {
                     />
                   <div className="ml-2">
                     <p className="truncate w-28 text-xs">{e.name}</p>
-                    <p className="text-[12px]">{e.messages[e.messages?.length - 1].content}</p>
+                    <p className="text-[12px]">{e.messages[e.messages?.length - 1]?.content}</p>
                   </div>
                   </div>
                   <div className="p-1">

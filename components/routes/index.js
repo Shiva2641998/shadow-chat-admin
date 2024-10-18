@@ -120,7 +120,7 @@ export default function Routes() {
                   >
                     <AccordionHeader
                       onClick={() => handleOpen(i)}
-                      className="border-b-0 p-3"
+                      className="border-b-0 p-3 text-lg"
                     >
                       <ListItemPrefix className="mr-3">
                         <Icon className="h-7 w-7" />
@@ -141,7 +141,7 @@ export default function Routes() {
                           <div key={i} className="h-10 px-2">
                             <ListItem
                               onClick={() => navigatePage(path)}
-                              className={`h-10 ${
+                              className={`h-10 text-[1rem] ${
                                 path == pathName
                                   ? "bg-localColor text-activePrimaryBgColor font-bold"
                                   : "text-localColor"
@@ -172,7 +172,7 @@ export default function Routes() {
                     navigatePage(path)
                   }} // Handle click directly on the ListItem
                 >
-                  <div className="flex items-center">
+                  <div className="flex text-lg items-center">
                     <Icon className="h-7 w-7 mr-3" />
                     <Typography color="blue-gray" className="font-normal">
                       {displayText}
@@ -210,13 +210,13 @@ export default function Routes() {
               </ListItemPrefix>
               Settings
             </ListItem>*/}
-            <ListItem>
+            <ListItem className=" text-lg">
               <ListItemPrefix>
                 <IoSettingsOutline className="h-7 w-10 pr-2" />
               </ListItemPrefix>
               Settings
             </ListItem>
-            <ListItem>
+            <ListItem className=" text-lg">
               <ListItemPrefix>
                 <IoMdLogOut className="h-7 w-10 pr-2" />
               </ListItemPrefix>
