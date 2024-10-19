@@ -4,6 +4,10 @@ import Title from "../../components/Title/Title";
 import { useDispatch } from "react-redux";
 import { useRequestApiAction } from "../../axios/requests/useRequestApiAction";
 import { toast } from "react-toastify";
+import { setPreviewDataInfo } from "../../store/themeSlice";
+import { Customheader } from "../../components/constants/ChatModule/Header";
+import { CustomSubheader } from "../../components/constants/ChatModule/SubHeader";
+import { CustomMessageBox } from "../../components/constants/ChatModule/MessageBox";
 
 function page() {
   const { PUT, GET } = useRequestApiAction();
@@ -29,12 +33,12 @@ function page() {
           [key]: val,
         },
       };
-      //   dispatch(
-      //     setPreviewDataInfo({
-      //       type: "/chat/list",
-      //       data: newData,
-      //     })
-      //   );
+        dispatch(
+          setPreviewDataInfo({
+            type: "/chat/customize",
+            data: newData,
+          })
+        );
       return newData;
     });
   };
@@ -66,10 +70,9 @@ function page() {
               .fill(0)
               .map((event, index) => (
                 <div className="flex flex-col items-center pr-10 w-96 " key={index}>
-                  <img
-                    src="https://talkjs.com/resources/content/images/wordpress/2021/04/th2.png"
-                    className="h-14 w-80"
-                  />
+                  <div className="h-14 w-80">
+                  {Customheader?.[index + 1]}
+                  </div>
                   <input
                     type="radio"
                     name="header-4"
@@ -91,10 +94,9 @@ function page() {
               .fill(0)
               .map((event, index) => (
                 <div className="flex flex-col items-center pr-10 w-96 " key={index}>
-                  <img
-                    src="https://talkjs.com/resources/content/images/wordpress/2021/04/th2.png"
-                    className="h-14 w-80"
-                  />
+                  <div className="h-14 w-80">
+                  {CustomSubheader?.[index + 1]}
+                  </div>
                   <input
                     type="radio"
                     name="subheader-4"
@@ -116,10 +118,9 @@ function page() {
               .fill(0)
               .map((event, index) => (
                 <div className="flex flex-col items-center pr-10 w-96 " key={index}>
-                  <img
-                    src="https://talkjs.com/resources/content/images/wordpress/2021/04/th2.png"
-                    className="h-14 w-80"
-                  />
+                   <div className="h-14 w-80">
+                  {CustomMessageBox?.[index + 1]}
+                  </div>
                   <input
                     type="radio"
                     name="message-4"
@@ -147,12 +148,12 @@ function page() {
                     quickReaction: val.target.checked,
                   },
                 };
-                //   dispatch(
-                //     setPreviewDataInfo({
-                //       type: "/chat/list",
-                //       data: newData,
-                //     })
-                //   );
+                dispatch(
+                  setPreviewDataInfo({
+                    type: "/chat/customize",
+                    data: newData,
+                  })
+                );
                 return newData;
               });
           }}

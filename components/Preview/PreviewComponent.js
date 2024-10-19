@@ -5,6 +5,7 @@ import ChatList from "./ChatList";
 import ChatFanzone from "./ChatFanzone";
 import EmptyView from "./EmptyView";
 import ChatBubble from "./ChatBubble";
+import ChatCustomize from "./ChatCustomize";
 import { usePathname } from "next/navigation";
 import { useSelector } from "react-redux";
 
@@ -29,6 +30,8 @@ const { previewData } = useSelector((state) => state.theme);
       return <ChatList path={type} />;
     case "/chat/bubble":
       return <ChatBubble path={type} />;
+    case "/chat/customize":
+      return <ChatCustomize path={type} />;
     default:
       return <EmptyView path={type} />;
   }

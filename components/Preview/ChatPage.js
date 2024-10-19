@@ -71,22 +71,6 @@ function ChatPage({ path }) {
         {Array(4)
           .fill(5)
           .map((e, i) => {
-            if (i % 2 == 0) {
-              return (
-                <div
-                  key={i}
-                  className="flex items-end justify-end mb-2 chat chat-end"
-                >
-                  <div
-                    className="chat-bubble"
-                    style={{ backgroundColor: TextColor, color: bgColor }}
-                  >
-                    <span style={{ fontSize: 10 }}>this is a Message</span>
-                  </div>
-                  <img src={imgURL} className="w-5 h-5 rounded-full" />
-                </div>
-              );
-            }
             return (
               <div key={i} className="flex items-end mb-2 chat chat-start">
                 <img src={imgURL} className="w-5 h-5 rounded-full" />
