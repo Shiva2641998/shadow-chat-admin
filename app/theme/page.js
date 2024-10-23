@@ -227,7 +227,7 @@ const FontFamily = ({ fontFamily, setthemeInfo }) => {
       toast.error("Font url and name required");
       return
     }
-console.log(fonturl)
+
     if(editStart){
       setthemeInfo((prev) => {
         let newData = {

@@ -47,7 +47,7 @@ function page() {
     setRowData((prevRows) =>
       prevRows.map((row) => {
         if (row.id === params.id) {
-          let d = { ...row, [params.field]: color };
+          let d = { ...row, [params.field]: color._id };
           showInPreview(d);
           return d;
         } else {
