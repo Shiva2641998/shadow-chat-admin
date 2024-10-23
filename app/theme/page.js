@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setPreviewDataInfo } from "../../store/themeSlice";
 import { FaTrash } from "react-icons/fa6";
+import { MdEdit } from "react-icons/md";
+
 
 function page() {
   const { GET, PUT } = useRequestApiAction();
@@ -213,6 +215,7 @@ const Themes = () => {
 
 const FontFamily = ({ fontFamily, setthemeInfo }) => {
   const dispatch = useDispatch();
+  const [editStart, seteditStart] = useState(false)
   const [fonturl, setfonturl] = useState({
     font: "",
     fontSize: 5,
@@ -220,10 +223,20 @@ const FontFamily = ({ fontFamily, setthemeInfo }) => {
   });
 
   const handleChange = () => {
-    if(fonturl.font==""){
-      alert("Font url required");
+    if(fonturl.font=="" || fonturl.fontName==""){
+      toast.error("Font url and name required");
       return
     }
+console.log(fonturl)
+    if(editStart){
+      setthemeInfo((prev) => {
+        let newData = {
+          ...prev,
+          fontFamily: prev.fontFamily.map((e) => e._id == fonturl._id ? fonturl : e),
+        };
+        return newData;
+      });
+    }else{
     setthemeInfo((prev) => {
       let newData = {
         ...prev,
@@ -234,6 +247,8 @@ const FontFamily = ({ fontFamily, setthemeInfo }) => {
       };
       return newData;
     });
+  }
+  seteditStart(false)
     setfonturl({
       font: "",
       fontSize: 5,
@@ -291,20 +306,28 @@ const FontFamily = ({ fontFamily, setthemeInfo }) => {
           className="bg-activePrimaryBgColor text-localColor px-4 py-2 rounded-lg"
           onClick={handleChange}
         >
-          Add
+          {editStart ? "Update" : "Add"}
         </button>
       </div>
       <div className="grid grid-cols-1 gap-4 p-2 mt-2">
         <div className="flex items-center">
         <p className="w-[20%] font-bold">Font Name</p>
           <p className="w-1/2 font-bold">Font Family</p>
-          <p className="w-[10%] font-bold">Font Size</p>
+          <p className="w-[10%] font-bold text-center">Font Size</p>
         </div>
         {fontFamily?.map((e, i) => (
           <div className="flex items-center">
             <p className="w-[20%]">{e.fontName}</p>
-            <p className="w-1/2">{e.font}</p>
-            <p className="w-[10%]">{e.fontSize}</p>
+            <p className="w-1/2 overflow-hidden truncate">{e.font}</p>
+            <p className="w-[10%] text-center">{e.fontSize}</p>
+            <MdEdit
+              className="ml-5 bg-primaryBgColor cursor-pointer p-2 rounded-md text-3xl text-yellow-400"
+              onClick={() => {
+                seteditStart(true)
+                setfonturl(e)
+              
+              }}
+            />
             <FaTrash
               className="ml-5 bg-primaryBgColor cursor-pointer p-2 rounded-md text-3xl text-red-400"
               onClick={() => handleRemoveChange(i)}
